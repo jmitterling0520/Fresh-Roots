@@ -1,0 +1,25 @@
+Category,Value,Notes
+Annual Revenue,150000,
+Annual Expenses,80000,Approximate
+Assumed Income Tax Rate,0.25,25% (change as needed)
+Taxable Income,=B2-B3,
+Estimated Annual Income Tax,=B5*B4,
+Quarterly Estimated Tax Payment,=B6/4,Paid quarterly (Apr, Jun, Sep, Jan)
+Projected Net Income,=B5-B6,
+Q1 Estimated Tax,=B6/4,Due in April
+Q2 Estimated Tax,=B6/4,Due in June
+Q3 Estimated Tax,=B6/4,Due in September
+Q4 Estimated Tax,=B6/4,Due in January
+
+MI Tailored Estimate,,For MI, MFJ, LLC pass-through
+Self-Employment Tax (approx),=ROUND(0.9235*B5*0.153,2),Estimated; under SS wage base
+Half SE Tax Deduction,=ROUND(B15/2,2),
+Federal Std Deduction (MFJ 2025),31500,Per IRS 2025
+Federal Taxable Income (pre-QBI),=MAX(0,B5-B16-B17),
+QBI Deduction (20% of QBI),=MIN(0.2*MAX(0,B5),0.2*B18),Limited to 20% of taxable income
+Federal Income Tax (2025 MFJ),=ROUND(IF((B18-B19)<=23850,0.10*MAX(0,B18-B19),IF((B18-B19)<=96950,2385+0.12*((B18-B19)-23850),IF((B18-B19)<=201050,11157+0.22*((B18-B19)-96950),IF((B18-B19)<=383900,34059+0.24*((B18-B19)-201050),IF((B18-B19)<=487450,77943+0.32*((B18-B19)-383900),IF((B18-B19)<=731200,111079+0.35*((B18-B19)-487450),196391.5+0.37*((B18-B19)-731200))))))),2),Progressive brackets applied to taxable after QBI
+Michigan State Tax Rate,0.0425,Flat rate
+Michigan State Income Tax,=ROUND(B5*B21,2),
+Total Estimated Taxes (tailored),=ROUND(B15+B20+B22,2),
+Quarterly Estimated Payments (tailored),=ROUND(B23/4,2),
+Projected Net Income After Tax (tailored),=B5-B23,
