@@ -47,13 +47,13 @@ npm install -g ngrok
 First, make sure your Next.js development server is running on port 8080:
 
 ```bash
-cd "/Users/James/Documents/My New Company"
+cd "/Users/James/Documents/Fresh Roots"
 ./start-server.sh
 ```
 
 Or manually:
 ```bash
-cd "/Users/James/Documents/My New Company/Website"
+cd "/Users/James/Documents/Fresh Roots/Website"
 npm run dev -- -p 8080
 ```
 
@@ -167,7 +167,7 @@ ngrok http 8080 --basic-auth="username:password"
 
 **Start local server:**
 ```bash
-cd "/Users/James/Documents/My New Company"
+cd "/Users/James/Documents/Fresh Roots"
 ./start-server.sh
 ```
 
