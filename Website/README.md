@@ -57,11 +57,18 @@ Website/
 
 **Full steps:** See **[Plans/Deployment - freshrootsconsulting.us.md](../Plans/Deployment%20-%20freshrootsconsulting.us.md)** in the repo root.
 
+**GitHub repos:**
+
+- **Vercel is currently connected to:** [jmitterling0520/fresh_roots_consulting_website](https://github.com/jmitterling0520/fresh_roots_consulting_website) (website-only repo).
+- **Main project repo (this code):** [jmitterling0520/Fresh-Roots](https://github.com/jmitterling0520/Fresh-Roots) (includes `Website/`, Plans, Organization, Services).
+
+**Recommended:** Point Vercel at **Fresh-Roots** with **Root Directory** = `Website`. Then one push from the main repo updates the live site. See the deployment guide for steps to switch.
+
 Summary:
 
 1. Push the repo to GitHub (Vercel imports from GitHub).
-2. In [Vercel](https://vercel.com): **Add New → Project** → import the repo.
-3. Set **Root Directory** to `Website`, then Deploy.
+2. In [Vercel](https://vercel.com): **Add New → Project** → import the repo (Fresh-Roots or fresh_roots_consulting_website).
+3. If using Fresh-Roots, set **Root Directory** to `Website`, then Deploy.
 4. In the project: **Settings → Domains** → add `freshrootsconsulting.us` (and optionally `www.freshrootsconsulting.us`).
 5. At your domain registrar, add the A/CNAME records Vercel shows. HTTPS is automatic once DNS propagates.
 

@@ -13,18 +13,48 @@ This guide walks you through deploying the Next.js site to **Vercel** and connec
 
 ---
 
+## GitHub Repo and Vercel
+
+**Current setup:** The live site (freshrootsconsulting.us) is deployed from Vercel, and Vercel is connected to:
+
+- **https://github.com/jmitterling0520/fresh_roots_consulting_website** (website-only repo)
+
+Your main project repo (where you work in Cursor) is:
+
+- **https://github.com/jmitterling0520/Fresh-Roots** (full project: `Website/`, `Plans/`, `Organization/`, `Services/`, etc.)
+
+### Which repo should Vercel use?
+
+| Option | Repo | Root Directory | Pros | Cons |
+|--------|------|----------------|------|------|
+| **A (recommended)** | [Fresh-Roots](https://github.com/jmitterling0520/Fresh-Roots) | `Website` | Single source of truth; one push from Cursor updates the site; no syncing | Need to point Vercel at Fresh-Roots and set Root Directory |
+| **B** | [fresh_roots_consulting_website](https://github.com/jmitterling0520/fresh_roots_consulting_website) | *(empty—repo is website-only)* | Already connected | You must push/sync website changes to this repo separately from Fresh-Roots |
+
+**Recommendation: Use Option A (Fresh-Roots + Root Directory = Website).** Then you push once to Fresh-Roots from Cursor and Vercel deploys the `Website/` folder. No need to maintain two repos or sync between them.
+
+**To switch Vercel to Fresh-Roots (Option A):**
+
+1. Vercel Dashboard → your project (freshrootsconsulting.us) → **Settings** → **Git**.
+2. **Disconnect** the current repo (fresh_roots_consulting_website) if you want to switch.
+3. **Connect Git Repository** → choose **jmitterling0520/Fresh-Roots**, branch **main**.
+4. **Settings** → **Build and Deployment** → **Root Directory** → set to **Website** → Save.
+5. **Deployments** → trigger a **Redeploy** (or push a commit to Fresh-Roots). Confirm the site at freshrootsconsulting.us looks correct.
+
+After that, keep working in the Fresh-Roots repo; every push to `main` will deploy the site.
+
+---
+
 ## Step 1: Push Your Code to GitHub
 
 If the project isn’t on GitHub yet:
 
-1. Create a new repository at [github.com/new](https://github.com/new) (e.g. `fresh-roots-website`).
+1. Use the existing [Fresh-Roots](https://github.com/jmitterling0520/Fresh-Roots) repo or create one at [github.com/new](https://github.com/new).
 2. From your project root:
    ```bash
    cd "/Users/James/Documents/Fresh Roots"
-   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+   git remote add origin https://github.com/jmitterling0520/Fresh-Roots.git
    git push -u origin main
    ```
-   (Use your actual repo URL and branch name.)
 
 ---
 
@@ -32,8 +62,8 @@ If the project isn’t on GitHub yet:
 
 1. Go to [vercel.com](https://vercel.com) and sign in (GitHub is easiest).
 2. Click **Add New…** → **Project**.
-3. **Import** your GitHub repository (e.g. `fresh-roots-website`).
-4. **Root Directory:** set to `Website` (so Vercel builds the Next.js app, not the repo root).
+3. **Import** your GitHub repository: **Fresh-Roots** (recommended) or **fresh_roots_consulting_website**.
+4. **Root Directory:** if using **Fresh-Roots**, set to `Website`. If using **fresh_roots_consulting_website**, leave empty (repo is website-only).
 5. Leave framework preset as **Next.js** and click **Deploy**.
 6. Wait for the first deploy. You’ll get a URL like `your-project.vercel.app`.
 
@@ -125,8 +155,8 @@ The contact form currently saves to a **file** (`data/submissions.json`). On Ver
 
 | Step              | Where                    | Action |
 |-------------------|--------------------------|--------|
-| Code              | GitHub                   | Repo with `Website/` as the app |
-| Build             | Vercel → Project         | Root Directory = `Website` |
+| Code              | GitHub                   | **Fresh-Roots** (main project) or **fresh_roots_consulting_website** (website-only). Recommended: Fresh-Roots with Root Directory = `Website`. |
+| Build             | Vercel → Project         | Root Directory = `Website` (if using Fresh-Roots); empty (if using fresh_roots_consulting_website) |
 | Domain            | Vercel → Settings → Domains | Add `freshrootsconsulting.us` (and optional www) |
 | DNS               | Namecheap → Manage → Advanced DNS | A record `@` → 76.76.21.21; CNAME `www` → cname.vercel-dns.com |
 | HTTPS             | Vercel                   | Automatic after DNS is correct |
@@ -135,10 +165,30 @@ The contact form currently saves to a **file** (`data/submissions.json`). On Ver
 
 ## Troubleshooting
 
+- **Push to GitHub not showing on freshrootsconsulting.us:** See **Push not showing on live site** below.
 - **Domain not working:** Wait up to 48 hours for DNS, then re-check the records. Use [Vercel’s DNS check](https://vercel.com/docs/concepts/projects/domains#dns-records) or `dig freshrootsconsulting.us`.
 - **Namecheap still shows “Parked” or default page:** You’re editing **Advanced DNS**, not “Nameservers”. Keep nameservers as **Namecheap BasicDNS** (or PremiumDNS) and only add/update the A and CNAME records above.
 - **Wrong project / 404:** Ensure the Vercel project’s **Root Directory** is `Website`.
 - **Build fails:** Run `npm run build` inside `Website/` locally and fix any TypeScript or build errors before pushing.
+
+### Push not showing on live site
+
+If you pushed to GitHub but https://www.freshrootsconsulting.us (or https://freshrootsconsulting.us) still shows old content:
+
+1. **Confirm Vercel is connected to GitHub**
+   - [Vercel Dashboard](https://vercel.com/dashboard) → your project (the one with freshrootsconsulting.us).
+   - **Settings** → **Git** → confirm **Connected Git Repository** is one of: `jmitterling0520/Fresh-Roots` (with Root Directory = `Website`) or `jmitterling0520/fresh_roots_consulting_website`. If it says "No Git Repository connected", connect it: **Connect Git Repository** → choose the repo and branch (e.g. `main`). If using Fresh-Roots, set **Root Directory** to `Website` in **Settings** → **Build and Deployment**.
+
+2. **Confirm Root Directory**
+   - **Settings** → **Build and Deployment** → **Root Directory** must be `Website` (so Vercel builds the Next.js app). If it’s empty or wrong, set to `Website` and save; trigger a redeploy.
+
+3. **Check the latest deployment**
+   - In the project, open the **Deployments** tab. Find the latest deployment and check:
+     - **Status:** Should be "Ready". If it’s "Failed" or "Error", open it and fix the build error (often Root Directory or build logs).
+     - **Source:** Should show the commit you just pushed (e.g. "Deploy: deployment guide..."). If the latest deployment is from an old commit, Vercel may not be getting pushes—re-check **Settings** → **Git**.
+
+4. **Redeploy**
+   - **Deployments** → click the **⋯** on the latest deployment → **Redeploy** (or push a small commit and wait for the new deployment). After it’s "Ready", the live site should update within a minute or two.
 
 ---
 
