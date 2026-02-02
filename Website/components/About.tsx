@@ -24,7 +24,7 @@ export default function About() {
                 <h3>Our Approach</h3>
                 <p>At Fresh Roots, we help small businesses optimize their operations through systematic refinement, leveraging technology to streamline processes and enhance productivity. Every improvement builds upon the last, creating lasting transformation—because we educate you and your team on the reasoning behind each incremental change, ensuring understanding and buy-in at every step.</p>
                 <p>Our approach to process and technology efficiency is methodical, sustainable, and results-driven.</p>
-                <p>From process optimization to technology implementation, we guide you step by step, ensuring each enhancement strengthens your foundation for future growth and sustainability.</p>
+                <p>From process optimization to technology implementation, we guide you step by step, ensuring each enhancement strengthens your foundation for future growth and sustainability. </p>
               </div>
             </div>
           </div>

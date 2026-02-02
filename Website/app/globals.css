@@ -173,7 +173,7 @@ nav {
 /* About Section */
 .about {
   background: linear-gradient(to bottom, rgba(247, 248, 250, 0.92) 0%, rgba(247, 248, 250, 0.88) 100%),
-              url('/Oak Image.webp');
+              url('/Oak-Image.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -424,7 +424,7 @@ nav {
 /* Expertise Section */
 .expertise {
   background: linear-gradient(to bottom, rgba(247, 248, 250, 0.92) 0%, rgba(247, 248, 250, 0.88) 100%),
-              url('/Oak Image.webp');
+              url('/Oak-Image.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
