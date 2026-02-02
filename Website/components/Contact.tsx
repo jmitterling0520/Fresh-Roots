@@ -91,7 +91,7 @@ export default function Contact() {
                       </div>
                       <div className="form-group">
                         <label htmlFor="company_website">Company website *</label>
-                        <input id="company_website" name="company_website" type="url" placeholder="https://" required />
+                        <input id="company_website" name="company_website" type="text" inputMode="url" autoComplete="url" placeholder="https://example.com or www.example.com" required />
                       </div>
                       <div className="form-group form-group-full">
                         <label htmlFor="problem">What problem are you trying to solve? *</label>
