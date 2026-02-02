@@ -190,6 +190,45 @@ If you pushed to GitHub but https://www.freshrootsconsulting.us (or https://fres
 4. **Redeploy**
    - **Deployments** → click the **⋯** on the latest deployment → **Redeploy** (or push a small commit and wait for the new deployment). After it’s "Ready", the live site should update within a minute or two.
 
+### Renders on *.vercel.app but not on www.freshrootsconsulting.us (or freshrootsconsulting.us)
+
+If the site **renders correctly** when you open the **Vercel app URL** (e.g. `your-project.vercel.app`) but **does not render properly** at **www.freshrootsconsulting.us** or **freshrootsconsulting.us**, the custom domain is almost certainly pointing at a **different Vercel project** (or an old deployment).
+
+**Fix: Use the same project for the domain and for your code**
+
+1. **See which project has the domain**
+   - [Vercel Dashboard](https://vercel.com/dashboard) → open each project that might be related (e.g. "Fresh-Roots", "fresh-roots-website", "fresh_roots_consulting_website").
+   - In each project go to **Settings** → **Domains**.
+   - Find the project where **freshrootsconsulting.us** and/or **www.freshrootsconsulting.us** are listed.
+
+2. **Two cases**
+   - **If the domain is on the OLD project** (e.g. connected to **fresh_roots_consulting_website**): That project is what www.freshrootsconsulting.us serves. Your new code is in **Fresh-Roots**, so the *.vercel.app URL for the Fresh-Roots project shows the new site, but the custom domain still shows the old project.
+     - **Fix:** Move the domain to the **Fresh-Roots** project: In the **Fresh-Roots** project → **Settings** → **Domains** → **Add** → enter **freshrootsconsulting.us** (and **www.freshrootsconsulting.us** if you use it). Vercel will ask to remove the domain from the other project; confirm. Then in the Fresh-Roots project set **Root Directory** to **Website** (if not already), redeploy, and the custom domain will serve the same build as *.vercel.app.
+   - **If the domain is already on the Fresh-Roots project:** Use the checklist below (**Project correct but domain still wrong**).
+
+**Project correct (GitHub + Root Directory) but custom domain still wrong**
+
+If the project is already on the right repo and Root Directory = **Website**, but www.freshrootsconsulting.us still doesn’t match *.vercel.app:
+
+1. **Production deployment**
+   - **Deployments** → find the deployment you want live (latest from `main`).
+   - If it doesn’t have the **Production** badge: click **⋯** on it → **Promote to Production**. The custom domain serves whatever deployment is **Production**.
+
+2. **Domain assigned to Production**
+   - **Settings** → **Domains** → click **freshrootsconsulting.us** (and **www.freshrootsconsulting.us** if listed).
+   - Ensure each domain is assigned to **Production** (not Preview or Development). If it’s on Preview, it will serve preview builds instead of the Production one.
+
+3. **Clean redeploy**
+   - **Deployments** → **⋯** on the latest deployment → **Redeploy**.
+   - If you see **Clear build cache** or similar, use it so the redeploy isn’t reusing an old cache.
+   - After the new deployment is **Ready**, make sure it’s **Production** (step 1).
+
+4. **Test without cache**
+   - Open **https://www.freshrootsconsulting.us** (or **https://freshrootsconsulting.us**) in an **incognito/private** window (or another device). If it still differs from *.vercel.app, compare response headers (e.g. **x-vercel-id** or **server**) for both URLs to confirm they hit the same deployment.
+
+**After moving the domain (if you did step 2):**
+   - Wait a minute or two, then open **https://www.freshrootsconsulting.us** (or **https://freshrootsconsulting.us**) in an **incognito/private** window. It should match the *.vercel.app site.
+
 ---
 
 **Last updated:** February 2025

@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 
-const CALENDLY_URL = 'https://calendly.com' // Replace with your Calendly link, e.g. https://calendly.com/your-username/30min
-
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -68,20 +66,15 @@ export default function Contact() {
               <div>
                 <h3 style={{ color: 'white', marginBottom: '0.5rem' }}>Book a conversation</h3>
                 <p className="engage-step-choices">
-                  Schedule a free 30-minute call <strong>or</strong> fill out the short form below — we&apos;ll reach out to schedule.
+                  Fill out the short form below — we&apos;ll reach out to schedule.
                 </p>
-                <div className="engage-ctas">
-                  <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="cta-button cta-primary">
-                    Schedule a free 30-min call
-                  </a>
-                </div>
                 {submitted ? (
                   <div className="form-success">
                     <p>Thanks — we&apos;ll be in touch within 1–2 business days to schedule your call.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="contact-form">
-                    <p className="form-intro">Or fill out the form below and we&apos;ll reach out to schedule.</p>
+                    <p className="form-intro">We&apos;ll be in touch within 1–2 business days.</p>
                     {error && <p className="form-error" role="alert">{error}</p>}
                     <div className="form-grid">
                       <div className="form-group">
