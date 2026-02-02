@@ -72,8 +72,8 @@ If the project isn’t on GitHub yet:
 ## Step 3: Add Your Custom Domain
 
 1. In the Vercel project, open **Settings** → **Domains**.
-2. Enter: `freshrootsconsulting.us`
-3. Optionally add: `www.freshrootsconsulting.us` (Vercel can redirect www → apex or vice versa).
+2. Add both: `freshrootsconsulting.us` and `www.freshrootsconsulting.us`.
+3. Set **www.freshrootsconsulting.us** as the **primary** domain in Vercel Domains so **freshrootsconsulting.us** (apex) redirects to **www**.
 4. Vercel will show the DNS records you need. You’ll use one of these:
 
    **Option A – CNAME (for www only)**  
@@ -89,7 +89,7 @@ If the project isn’t on GitHub yet:
    **Option C – Both**  
    - A record for `@` (or `freshrootsconsulting.us`) → `76.76.21.21`  
    - CNAME for `www` → `cname.vercel-dns.com`  
-   Then in Vercel Domains you can set the apex as primary and redirect www to it (or the opposite).
+   In Vercel Domains, set **www.freshrootsconsulting.us** as **primary** so **freshrootsconsulting.us** redirects to www.
 
 5. Add the DNS records at your registrar (see **Namecheap** below).
 6. DNS can take from a few minutes up to 48 hours. Vercel will issue an SSL certificate automatically once DNS is correct.
@@ -135,7 +135,7 @@ You bought the domain from **Namecheap**. Use these steps to point it at Vercel.
 
 ## Step 4: Verify
 
-- Visit **https://freshrootsconsulting.us** (and **https://www.freshrootsconsulting.us** if you added www).
+- Visit **https://www.freshrootsconsulting.us** (primary); **https://freshrootsconsulting.us** should redirect to www.
 - Confirm the site loads and that **https** works (no browser warnings).
 
 ---
@@ -157,7 +157,7 @@ The contact form currently saves to a **file** (`data/submissions.json`). On Ver
 |-------------------|--------------------------|--------|
 | Code              | GitHub                   | **Fresh-Roots** (main project) or **fresh_roots_consulting_website** (website-only). Recommended: Fresh-Roots with Root Directory = `Website`. |
 | Build             | Vercel → Project         | Root Directory = `Website` (if using Fresh-Roots); empty (if using fresh_roots_consulting_website) |
-| Domain            | Vercel → Settings → Domains | Add `freshrootsconsulting.us` (and optional www) |
+| Domain            | Vercel → Settings → Domains | Add both; set **www.freshrootsconsulting.us** as primary (apex redirects to www) |
 | DNS               | Namecheap → Manage → Advanced DNS | A record `@` → 76.76.21.21; CNAME `www` → cname.vercel-dns.com |
 | HTTPS             | Vercel                   | Automatic after DNS is correct |
 
@@ -165,11 +165,21 @@ The contact form currently saves to a **file** (`data/submissions.json`). On Ver
 
 ## Troubleshooting
 
+- **"Too many HTTP redirects"** (CSS/JS fail to load): See **Redirect loop** below.
 - **Push to GitHub not showing on freshrootsconsulting.us:** See **Push not showing on live site** below.
 - **Domain not working:** Wait up to 48 hours for DNS, then re-check the records. Use [Vercel’s DNS check](https://vercel.com/docs/concepts/projects/domains#dns-records) or `dig freshrootsconsulting.us`.
 - **Namecheap still shows “Parked” or default page:** You’re editing **Advanced DNS**, not “Nameservers”. Keep nameservers as **Namecheap BasicDNS** (or PremiumDNS) and only add/update the A and CNAME records above.
 - **Wrong project / 404:** Ensure the Vercel project’s **Root Directory** is `Website`.
 - **Build fails:** Run `npm run build` inside `Website/` locally and fix any TypeScript or build errors before pushing.
+
+### Redirect loop ("too many HTTP redirects")
+
+If the page or assets (CSS, JS) fail with **"too many HTTP redirects"**, www and apex are redirecting to each other: e.g. vercel.json (or another rule) redirects www → apex, and Vercel Domains redirects apex → www.
+
+**Fix:** Use **only one** place to redirect between www and apex.
+
+1. **Vercel Domains:** In the project → **Settings** → **Domains** → set **www.freshrootsconsulting.us** as **primary**. Add **freshrootsconsulting.us** (apex) and let Vercel redirect it to www. Do **not** also add a www ↔ apex redirect in `vercel.json`; that creates a loop.
+2. **If you had a redirect in vercel.json:** Remove it (we removed the www → apex redirect from this project’s vercel.json for this reason). Redeploy. The custom domain and assets should load without a loop.
 
 ### Push not showing on live site
 

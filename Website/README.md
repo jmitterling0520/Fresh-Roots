@@ -72,7 +72,7 @@ Summary:
 4. In the project: **Settings → Domains** → add `freshrootsconsulting.us` (and optionally `www.freshrootsconsulting.us`).
 5. At your domain registrar, add the A/CNAME records Vercel shows. HTTPS is automatic once DNS propagates.
 
-`vercel.json` redirects `www.freshrootsconsulting.us` to `freshrootsconsulting.us`.
+**Primary domain:** **www.freshrootsconsulting.us**. In **Vercel → Settings → Domains**, set www as primary so **freshrootsconsulting.us** redirects to www. Do not add a duplicate redirect in vercel.json or you may get "too many redirects."
 
 ### Deploy to Other Platforms
 
