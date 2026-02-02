@@ -4,6 +4,23 @@ This plan covers **website changes** and **workflow processes** so new potential
 
 ---
 
+## Decisions & Completed Work
+
+**Last updated:** Reflecting implementation to date.
+
+| Decision / outcome | Details |
+|--------------------|---------|
+| **“How to Engage” placement** | Folded into a **revamped Contact section** (single section with heading “How to Engage”). No separate section between Expertise and Contact. |
+| **Step 2 layout** | The short form lives **inside Step 2** (“Book a conversation”). Step 3 (“After our first conversation”) appears **after** the form. Copy makes it explicit: “Schedule a free 30-minute call **or** fill out the short form below.” |
+| **Direct contact block** | The “Or reach out directly” block (Email, Phone, LinkedIn) was **removed** from the Contact section to keep the page focused on the two paths (Calendly or form). |
+| **Form backend** | **Own backend** instead of Formspree/Netlify: Next.js API route `POST /api/contact` stores submissions in `Website/data/submissions.json` (file-based). See Phase 3 below for storage/email notes. |
+| **Navigation** | Nav label is **“How to Engage”** and links to `#contact`. Hero **“Get Started”** button scrolls to `#contact`. |
+| **Monitoring** | A separate plan covers form/API monitoring: [Form Submission Monitoring Plan.md](./Form%20Submission%20Monitoring%20Plan.md). |
+
+**Still to do:** Add your real Calendly URL in `Contact.tsx` (`CALENDLY_URL`). For production (e.g. Vercel), consider moving form storage from file to a DB or adding email notifications (see Phase 3).
+
+---
+
 ## Overview & Goals
 
 | Goal | Description |
@@ -35,7 +52,8 @@ Visitor → Reads site (About, Services, Expertise)
 
 ### 1.1 Add a "How to Engage" (or "Get Started") section
 
-- **Placement:** Between **Expertise** and **Contact** (or fold into a revamped Contact section).
+- **Placement:** Between **Expertise** and **Contact** (or fold into a revamped Contact section).  
+  **→ Done:** Folded into a revamped Contact section.
 - **Content:**
   1. **Step 1 — Learn.** Briefly restate that the site explains what we do (About, Services, Expertise) and link to those sections.
   2. **Step 2 — Book a conversation.** Free 30-minute call to discuss their organization and goals. Two options:
@@ -45,13 +63,17 @@ Visitor → Reads site (About, Services, Expertise)
 
 ### 1.2 Update navigation and CTAs
 
-- Add **“How to Engage”** (or “Get Started”) to the nav; link to `#how-to-engage` or `#contact` if you merge it with Contact.
-- Ensure the Hero **“Get Started”** CTA scrolls to the engagement section (or Contact) rather than only showing email/phone.
-- Add a secondary CTA in **Contact** (or **How to Engage**): e.g. **“Book a free 30-min call”** and **“Tell us about your organization”** (form).
+- Add **“How to Engage”** (or “Get Started”) to the nav; link to `#how-to-engage` or `#contact` if you merge it with Contact.  
+  **→ Done:** Nav shows “How to Engage” and links to `#contact`.
+- Ensure the Hero **“Get Started”** CTA scrolls to the engagement section (or Contact) rather than only showing email/phone.  
+  **→ Done:** Hero CTA scrolls to `#contact`.
+- Add a secondary CTA in **Contact** (or **How to Engage**): e.g. **“Book a free 30-min call”** and **“Tell us about your organization”** (form).  
+  **→ Done:** “Schedule a free 30-min call” CTA + form inside Step 2.
 
 ### 1.3 Clarify “what we do” on the site
 
-- **Services** and **Expertise** already explain offerings. Optionally add a single short “We help small businesses (1–10 employees) with process, technology, data, and automation” line near the top or in **How to Engage** to reinforce who you serve.
+- **Services** and **Expertise** already explain offerings. Optionally add a single short “We help small businesses (1–10 employees) with process, technology, data, and automation” line near the top or in **How to Engage** to reinforce who you serve.  
+  **→ Done:** That line appears in the Contact (“How to Engage”) section.
 
 ---
 
@@ -85,34 +107,34 @@ Visitor → Reads site (About, Services, Expertise)
 | **Industry** (optional) | No | Dropdown or short text |
 | **Team size** (optional) | No | e.g. 1–5, 6–10, or “Prefer not to say” |
 
-**Form placement:** In the **How to Engage** or **Contact** section, clearly labeled (e.g. “Or tell us about your organization first — we’ll reach out to schedule a call”).
+**Form placement:** In the **How to Engage** or **Contact** section, clearly labeled (e.g. “Or tell us about your organization first — we’ll reach out to schedule a call”).  
+**→ Done:** Form is inside Step 2 (“Book a conversation”), with copy: “Or fill out the form below and we’ll reach out to schedule.”
 
-**Form handling options (Phase 3):**
+**Form handling (implemented):**
 
-- **Simple:** Form submits to a **form backend** (e.g. Formspree, Netlify Forms, Google Forms) → email notification to you → you manually schedule via Calendly and send the link.
-- **Integrated:** Form POST to your own API/route → store submissions (e.g. Airtable, Google Sheet, or DB) and optionally trigger “we’ve received your submission” email + add to your calendar workflow.
+- **Decision:** Use **our own backend** (Next.js API route) instead of Formspree/Netlify.
+- **Implemented:** `POST /api/contact` accepts JSON, validates required fields, appends to `Website/data/submissions.json` with a `received_at` timestamp. Post-submit message: “Thanks — we’ll be in touch within 1–2 business days to schedule your call.”
+- **Optional later:** Add email notification (e.g. Resend) or move to a DB for production (e.g. Vercel); see Phase 3 and [Form Submission Monitoring Plan](./Form%20Submission%20Monitoring%20Plan.md).
 
 ---
 
 ## Phase 3: Form Handling & Notifications
 
-### 3.1 Minimal setup (quickest)
+### 3.1 Implemented: Own backend
 
-- Use **Formspree** or **Netlify Forms** (if deployed on Netlify):
-  - Form `action` points to their endpoint.
-  - You receive an email per submission with all fields.
-  - You then manually add the lead to your process (spreadsheet, CRM, or todo) and send a Calendly link.
+- **Form** submits via JavaScript to **`/api/contact`** (Next.js API route).
+- **Storage:** Submissions are appended to **`Website/data/submissions.json`** (gitignored). Each entry includes all form fields plus `received_at`.
+- **Production note:** On serverless (e.g. Vercel) the app filesystem is read-only; for production either use a DB (Vercel Postgres, Supabase) or an email-only flow (e.g. Resend) so you still receive submissions.
 
-### 3.2 Optional: Store submissions
+### 3.2 Optional: Notifications and storage
 
-- **Google Sheet:** Formspree can forward to a Google Sheet via Zapier/Make, or use Google Forms instead of a custom form (trade-off: less control over UI).
-- **Airtable / Notion:** Use Zapier, Make, or a small serverless function to create a row per submission.
-- **Your app:** Next.js API route + serverless DB (e.g. Vercel Postgres, Supabase) if you want everything in one place later.
+- **Email per submission:** Add Resend (or similar) in the API route; send yourself an email with the submission when `POST /api/contact` succeeds.
+- **Google Sheet / Airtable / Notion:** Use Zapier, Make, or a serverless function to create a row per submission if you want a spreadsheet/CRM view.
+- **DB in app:** Next.js API route + Vercel Postgres or Supabase if you want everything in one place and serverless-friendly storage.
 
 ### 3.3 Post-submission message
 
-- Show a clear **“Thanks — we’ll be in touch within 1–2 business days to schedule your call”** (or similar) message after form submit.
-- Optional: Send an automated **“We received your info”** email (e.g. via Formspree or your backend).
+- **Done:** A clear **“Thanks — we’ll be in touch within 1–2 business days to schedule your call”** message is shown after a successful submit. On error, the form shows an error message (e.g. validation or network).
 
 ---
 
@@ -199,14 +221,14 @@ Use this as an ordered checklist. You can do Phases 1–2 first, then 3–5.
 
 ### Website
 
-- [ ] Add **“How to Engage”** (or **“Get Started”**) section: 3 steps (Learn → Book conversation → Post-call questionnaire).
-- [ ] Add **“How to Engage”** to navigation; ensure Hero **“Get Started”** scrolls to it (or Contact).
+- [x] Add **“How to Engage”** (or **“Get Started”**) section: 3 steps (Learn → Book conversation → Post-call questionnaire). *(Folded into revamped Contact section.)*
+- [x] Add **“How to Engage”** to navigation; ensure Hero **“Get Started”** scrolls to it (or Contact).
 - [ ] Create Calendly event **“Free 30-Minute Discovery Call”** and add optional questions (company name, website).
-- [ ] Add **“Book a free 30-min call”** CTA linking to Calendly (and/or embed).
-- [ ] Build **pre-call form** (company name, website, your name, email, “What problem are you trying to solve?”).
-- [ ] Wire form to Formspree / Netlify Forms (or chosen backend); configure email notifications.
-- [ ] Add post-submit confirmation message (and optional “we received your info” email).
-- [ ] Optionally store form submissions (Google Sheet, Airtable, etc.) if desired.
+- [x] Add **“Book a free 30-min call”** CTA linking to Calendly (and/or embed). *(Replace placeholder `CALENDLY_URL` in `Contact.tsx` with your real link.)*
+- [x] Build **pre-call form** (company name, website, your name, email, “What problem are you trying to solve?”, optional industry/team size).
+- [x] Wire form to backend. *(Own API: `POST /api/contact`; stores in `data/submissions.json`.)*
+- [x] Add post-submit confirmation message (and optional “we received your info” email). *(Confirmation done; optional email not yet added.)*
+- [x] Store form submissions. *(File-based in `Website/data/submissions.json`; optional DB/email for production.)*
 
 ### Workflow
 
@@ -230,7 +252,11 @@ Use this as an ordered checklist. You can do Phases 1–2 first, then 3–5.
 - In Calendly: Share → Embed → Inline. Copy the embed code.
 - In Next.js, you can use an `iframe` in a new **“Book a call”** block or modal. Ensure `globals.css` or component styles account for the iframe width/height on mobile.
 
-### Form without custom backend
+### Form backend (current)
+
+- **Own API:** Form POSTs JSON to **`/api/contact`**; see `Website/app/api/contact/route.ts`. Submissions are stored in **`Website/data/submissions.json`** (see Phase 3). For production on serverless, add a DB or email (e.g. Resend).
+
+### Form without custom backend (alternatives)
 
 - **Formspree:** `action="https://formspree.io/f/YOUR_ID"`, `method="POST"`. No backend code required.
 - **Netlify Forms:** Add `name="contact"` (or similar) and `data-netlify="true"` to the form; Netlify parses it at build time. See [Netlify Forms](https://docs.netlify.com/forms/setup/).
@@ -244,12 +270,14 @@ Use this as an ordered checklist. You can do Phases 1–2 first, then 3–5.
 
 ## Summary
 
-| Phase | Focus | Output |
-|-------|--------|--------|
-| **1** | Website | “How to Engage” section, updated nav & CTAs |
-| **2** | Booking | Calendly live + pre-call form (company, website, problem) |
-| **3** | Form handling | Notifications + optional storage |
-| **4** | Questionnaire | Run Client Discovery Prompt → tailored questionnaire |
-| **5** | Delivery | Send questionnaire (email/form/doc) + template + follow-up process |
+| Phase | Focus | Status | Output |
+|-------|--------|--------|--------|
+| **1** | Website | Done | “How to Engage” folded into Contact; updated nav & CTAs; small-business tagline |
+| **2** | Booking | Partial | Pre-call form live; Calendly CTA in place (add your link) |
+| **3** | Form handling | Done | Own backend: `POST /api/contact` → `data/submissions.json`; post-submit message |
+| **4** | Questionnaire | Pending | Run Client Discovery Prompt → tailored questionnaire |
+| **5** | Delivery | Pending | Send questionnaire (email/form/doc) + template + follow-up process |
+
+**Related:** Form/API monitoring is covered in [Form Submission Monitoring Plan](./Form%20Submission%20Monitoring%20Plan.md).
 
 This gives you a clear path from **“interested visitor”** to **“first call”** to **“tailored discovery questionnaire”** using your existing Client Discovery Prompt and service offerings.

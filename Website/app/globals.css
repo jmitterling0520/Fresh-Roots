@@ -574,12 +574,300 @@ nav {
   opacity: 0.8;
 }
 
+/* How to Engage (revamped Contact) */
+.contact-tagline {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.engage-steps {
+  text-align: left;
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+}
+
+.engage-step {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+  align-items: flex-start;
+}
+
+.engage-step-num {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-weight: 700;
+  border-radius: 50%;
+  font-size: 1rem;
+}
+
+.engage-step p,
+.engage-step a {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.engage-step a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.engage-step a:hover {
+  opacity: 0.9;
+}
+
+.engage-step-choices {
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.engage-step-with-form .contact-form {
+  margin-top: 1.25rem;
+}
+
+.engage-step-with-form .form-success {
+  margin-top: 1.25rem;
+}
+
+.engage-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.engage-or {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+}
+
+.cta-primary {
+  background-color: var(--bg-white);
+  color: var(--primary-color);
+  padding: 0.65rem 1.25rem;
+  font-size: 1rem;
+}
+
+.contact-form {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1.75rem;
+  border-radius: 8px;
+}
+
+.form-intro {
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.form-error {
+  color: #fef2f2;
+  background: rgba(185, 28, 28, 0.4);
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  font-size: 1rem;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-group select {
+  cursor: pointer;
+}
+
+.form-group select option {
+  background: var(--primary-dark);
+  color: white;
+}
+
+.cta-submit {
+  background-color: var(--bg-white);
+  color: var(--primary-color);
+  border: none;
+  cursor: pointer;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.cta-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.cta-submit:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.form-success {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.form-success p {
+  color: white;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.contact-direct {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.contact-direct-label {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.contact-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .engage-ctas {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Privacy Policy Page */
+.privacy-page {
+  padding-bottom: 2rem;
+}
+
+.privacy-content {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.privacy-content h1 {
+  font-size: 2rem;
+  color: var(--text-dark);
+  margin-bottom: 0.25rem;
+}
+
+.privacy-effective {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+.privacy-content h2 {
+  font-size: 1.25rem;
+  color: var(--primary-dark);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.privacy-content p {
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.privacy-content ul {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.privacy-content ul li {
+  margin-bottom: 0.5rem;
+}
+
+.privacy-content ul.no-bullets {
+  list-style: none;
+  padding-left: 0;
+}
+
+.privacy-content a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.privacy-content a:hover {
+  text-decoration: underline;
+}
+
+.privacy-back {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
 /* Footer */
 footer {
   background-color: var(--text-dark);
   color: white;
   text-align: center;
   padding: 2rem;
+}
+
+footer a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }
 
 /* Responsive Design */

@@ -53,11 +53,19 @@ Website/
 
 ## Deployment
 
-### Deploy to Vercel (Recommended)
+### Deploy to freshrootsconsulting.us (Vercel)
 
-1. Push your code to GitHub
-2. Import your repository on [Vercel](https://vercel.com)
-3. Vercel will automatically detect Next.js and deploy
+**Full steps:** See **[Plans/Deployment - freshrootsconsulting.us.md](../Plans/Deployment%20-%20freshrootsconsulting.us.md)** in the repo root.
+
+Summary:
+
+1. Push the repo to GitHub (Vercel imports from GitHub).
+2. In [Vercel](https://vercel.com): **Add New → Project** → import the repo.
+3. Set **Root Directory** to `Website`, then Deploy.
+4. In the project: **Settings → Domains** → add `freshrootsconsulting.us` (and optionally `www.freshrootsconsulting.us`).
+5. At your domain registrar, add the A/CNAME records Vercel shows. HTTPS is automatic once DNS propagates.
+
+`vercel.json` redirects `www.freshrootsconsulting.us` to `freshrootsconsulting.us`.
 
 ### Deploy to Other Platforms
 

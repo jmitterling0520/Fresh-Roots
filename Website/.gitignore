@@ -24,6 +24,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# form submissions (stored by /api/contact)
+/data
+
 # local env files
 .env*.local
 

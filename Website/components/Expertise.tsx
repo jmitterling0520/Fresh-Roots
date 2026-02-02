@@ -95,7 +95,7 @@ export default function Expertise() {
                   {item.services.map((service, serviceIndex) => (
                     <li key={serviceIndex}>
                       <strong>{service.name}</strong>
-                      <span>: {service.detail}</span>
+                      <span> {service.detail}</span>
                     </li>
                   ))}
                 </ul>
