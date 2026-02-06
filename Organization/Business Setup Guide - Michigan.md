@@ -3,6 +3,13 @@
 ## Overview
 This guide outlines the steps required to establish your business (Fresh Roots) in the state of Michigan, including state and federal filing requirements.
 
+### Your progress
+- [x] Business structure chosen (LLC)
+- [x] Articles of Organization filed (Michigan)
+- [x] EIN obtained: **41-4106328**
+- [x] Operating Agreement drafted
+- [ ] **Next:** Sign the Operating Agreement (keep signed copy for your records)
+
 ---
 
 ## Step 1: Choose Your Business Structure
@@ -75,7 +82,7 @@ This guide outlines the steps required to establish your business (Fresh Roots) 
 - Most business structures (except sole proprietorships without employees)
 
 ### How to Apply:
-- **Website:** https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-ein-online
+- **Website:** https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number
 - **Cost:** Free
 - **Processing:** Immediate (online) or 4-5 weeks (mail/fax)
 - **Required Information:**
@@ -227,9 +234,9 @@ This guide outlines the steps required to establish your business (Fresh Roots) 
 ## Recommended Action Checklist
 
 ### Initial Setup (Complete First):
-- [ ] Choose business structure (recommend LLC)
-- [ ] Search and reserve business name
-- [ ] File Articles of Organization with Michigan
+- [x] Choose business structure (recommend LLC)
+- [x] Search and reserve business name
+- [x] File Articles of Organization with Michigan *(filed by Brad Nicoll, attorney)*
 - [ ] Obtain EIN from IRS
 - [ ] Create Operating Agreement (for LLC)
 

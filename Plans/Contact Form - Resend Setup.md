@@ -63,6 +63,11 @@ The contact form sends you an email for each submission via **Resend** when `RES
 
 ## Troubleshooting
 
+- **"Failed to send notification"** (form shows this error after submit):
+  1. **Check Vercel env vars:** Project → **Settings** → **Environment Variables**. Ensure **`RESEND_API_KEY`** and **`CONTACT_FORM_TO_EMAIL`** are set for **Production** (and that you redeployed after adding them).
+  2. **Resend "from" / "to" rules (free tier):** If you use the default **from** `onboarding@resend.dev`, Resend may only allow sending **to** the email address of your Resend account. Set **`CONTACT_FORM_TO_EMAIL`** to that same address, or verify your domain in Resend and set **`CONTACT_FORM_FROM_EMAIL`** to a verified address (e.g. `Fresh Roots <contact@freshrootsconsulting.us>`).
+  3. **Invalid API key:** In [Resend → API Keys](https://resend.com/api-keys), confirm the key is active and copy it again into Vercel as **`RESEND_API_KEY`** (no extra spaces). Redeploy.
+  4. **See the exact error:** Vercel → your project → **Deployments** → open the latest deployment → **Functions** or **Logs**. Look for `Resend error:` to see Resend’s message (e.g. "From address is not verified", "Invalid API key").
 - **Form still returns 500 on production:** Ensure `RESEND_API_KEY` and `CONTACT_FORM_TO_EMAIL` are set in Vercel and you redeployed after adding them.
 - **"From address is not verified":** Either use the default `onboarding@resend.dev` (and send only to your Resend account email) or verify freshrootsconsulting.us in Resend and set `CONTACT_FORM_FROM_EMAIL`.
 - **No email received:** Check Resend Dashboard → Logs for delivery status; check spam; confirm `CONTACT_FORM_TO_EMAIL` is correct in Vercel.

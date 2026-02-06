@@ -15,21 +15,27 @@ export default function Services() {
       title: 'Operations Optimization',
       sections: [
         {
-          subHeader: 'Planning',
+          subHeader: 'Identify',
+          items: [
+            'Process Inefficiencies Analysis'
+          ],
+        },
+        {
+          subHeader: 'Plan',
           items: [
             'Process Assessment & Analysis',
             'Efficiency Improvement Roadmaps',
           ],
         },
         {
-          subHeader: 'Discerning',
+          subHeader: 'Discern',
           items: [
             'Gap Analysis & Opportunity Identification',
             'Solution Evaluation & Priority Assessment',
           ],
         },
         {
-          subHeader: 'Executing',
+          subHeader: 'Execute',
           items: [
             'Workflow Streamlining',
             'Process Refinement',
@@ -41,21 +47,27 @@ export default function Services() {
       title: 'Technology Efficiency',
       sections: [
         {
-          subHeader: 'Planning',
+          subHeader: 'Identify',
+          items: [
+            'Technology Inefficiencies Analysis'
+          ],
+        },
+        {
+          subHeader: 'Plan',
           items: [
             'Technology Stack Assessment and Analysis',
             'Technology improvement roadmaps & education plans',
           ],
         },
         {
-          subHeader: 'Discerning',
+          subHeader: 'Discern',
           items: [
             'Solution Evaluation & Technology Selection',
             'ROI Analysis & Implementation Planning',
           ],
         },
         {
-          subHeader: 'Executing',
+          subHeader: 'Execute',
           items: [
             'System Integrations, Automations, and AI assistants',
             'Technology Platform Improvements',

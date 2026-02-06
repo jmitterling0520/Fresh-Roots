@@ -1,0 +1,12 @@
+---
+description: Use full permissions when running git push to GitHub so keychain/credentials work
+alwaysApply: true
+---
+
+# Git push to GitHub from Cursor
+
+When running `git push` (or `git push origin main`) to publish to GitHub, **always** use:
+
+- `required_permissions: ['all']`
+
+so the process can access the macOS Keychain where Git credentials are stored. Without this, push fails with "could not read Username for 'https://github.com': Device not configured".

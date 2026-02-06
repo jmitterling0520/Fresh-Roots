@@ -92,7 +92,7 @@ export async function POST(request: Request) {
         html: buildEmailHtml(submission),
       })
       if (error) {
-        console.error('Resend error:', error)
+        console.error('Resend error:', JSON.stringify(error))
         return NextResponse.json(
           { error: 'Failed to send notification' },
           { status: 500 }
