@@ -1,0 +1,211 @@
+Return-path: <bounces+56160400-cdc5-james.mitterling=icloud.com@em2735.mycase.com>
+Original-recipient: rfc822;james.mitterling@icloud.com
+Received: from p00-icloudmta-smtpin-us-east-2d-100-percent-17 by p55-mailgateway-smtp-bb9f7d949-dgxln (mailgateway 2544B77)
+	with SMTP id 753ae499-6196-42fe-9f16-f3fd33c1213b 
+	for <james.mitterling@icloud.com>; Tue, 3 Feb 2026 19:36:59 GMT
+X-Apple-MoveToFolder: INBOX 
+X-Apple-Action: MOVE_TO_FOLDER/INBOX
+X-Apple-UUID: 753ae499-6196-42fe-9f16-f3fd33c1213b
+Received: from o6.ptr4733.mycase.com (o6.ptr4733.mycase.com [134.128.116.0])
+	by p00-icloudmta-smtpin-us-east-2d-100-percent-17 (Postfix) with ESMTPS id EC1F3C000B8
+	for <james.mitterling@icloud.com>; Tue,  3 Feb 2026 19:36:54 +0000 (UTC)
+X-ICL-Info: GAtbRVYDBVFFSlVFSgQEUFUKE0oWX1gHVQoPB0UBBVZbSFRPVgEHVFtJRhIcDVQNABcFEgsbA1RET1ZDSAAbAREaU1oSUVsHBlcLHgxEUxAZEAgQRVlVDhoMAlkbX1siEBRUQEsFGA8MGgcEHR5VDRhZABNFXU8BFAoDWRtfW0IHGlsdGV1TEVsUDwMMVUQOHBcBNxFTWg0AHUgUF10WChAVCUoXBhgSAQtSQEsDGA8MGgcEHR5VDRhZFgMKDVlUWwkSBUwHBVFbFB8UGUNTTBYWC1ccVAsPDBoHBB0eVQ0YWQseHA0KVExBVEMdBQJTRRsHQydWV1EUHVUUSgMGWkVMVkZMcEYQGh1VFR8dVA0HHldFVkBEDRFXCxRWXVcLGUc=
+X-ICL-Score: 2.33303322422
+Authentication-Results: bimi.icloud.com; bimi=temperror reason="indicator fetch error"
+X-ARC-Info: policy=fail; arc=none; r1=-20; r2=0
+Authentication-Results: arc.icloud.com; arc=none
+Authentication-Results: dmarc.icloud.com; dmarc=pass header.from=mycase.com
+X-DMARC-Policy: v=DMARC1; p=quarantine; rua=mailto:5yuc6v4d@ag.us.dmarcian.com;
+X-DMARC-Info: pass=pass; dmarc-policy=quarantine; s=r1; d=r1; pdomain=mycase.com
+Authentication-Results: dkim-verifier.icloud.com; dkim=pass header.d=mycase.com header.i=@mycase.com header.b=0FC5V/Em
+Received-SPF: pass (spf.icloud.com: domain of bounces+56160400-cdc5-james.mitterling=icloud.com@em2735.mycase.com designates 134.128.116.0 as permitted sender) receiver=spf.icloud.com; client-ip=134.128.116.0; helo=o6.ptr4733.mycase.com; envelope-from=bounces+56160400-cdc5-james.mitterling=icloud.com@em2735.mycase.com
+Authentication-Results: spf.icloud.com; spf=pass (spf.icloud.com: domain of bounces+56160400-cdc5-james.mitterling=icloud.com@em2735.mycase.com designates 134.128.116.0 as permitted sender) smtp.mailfrom=bounces+56160400-cdc5-james.mitterling=icloud.com@em2735.mycase.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mycase.com;
+	h=date:from:subject:mime-version:reply-to:to:content-type:
+	content-transfer-encoding:cc:content-type:date:from:subject:to;
+	s=s1; bh=AxoZInNG45oyCxpVmBT0B5wBSR4bBpDgq4cTtcKZrvE=;
+	b=0FC5V/EmiXKWNpUfehDCIk1SZd+YE8Yh23RJK2AYqnMTT7Idu+Hzl7D+kMYqu8o3Yp1s
+	M87JhL2XEktlyjN48CFZAY6QaUsNavBB6klT3jupTVz1RUP1TEDADLKzinm5Lr7FwrjY8q
+	AVpTgAQITHB26VJiKrzTFf3Uhae93e4byd5X6qWG9Iy5f+ICLe6k4QcYmrovztH6rH3SZl
+	iJ+n9AQy/xA2aGwgKtnpB+gAB0fJ+OxaNBsroF82f9fU9FXJHaBh2ZnKu/vNz5sBqr0NDp
+	C5RF663ZmVNs2FJwvErNh0xPT27CAqzE3/jiU1Pvdc4cbChsioQWnJPt5fBXP8uw==
+Received: by recvd-665885f976-nsgh4 with SMTP id recvd-665885f976-nsgh4-1-69824E54-14
+	2026-02-03 19:36:52.295660166 +0000 UTC m=+4138205.509956698
+Received: from mycaseinc.com (unknown)
+	by geopod-ismtpd-24 (SG) with ESMTP
+	id k9XVqM37TGOmn9X9CDVrLQ
+	for <James.Mitterling@icloud.com>;
+	Tue, 03 Feb 2026 19:36:52.249 +0000 (UTC)
+Date: Tue, 03 Feb 2026 19:36:52 +0000 (UTC)
+From: "Bradley J. Nicoll, Attorney at Law" <no-reply@mycase.com>
+Message-ID: <69824e5410ba4_fa3ad3c230805014@prod3bg-borg12.prod.mc.mail>
+Subject: Your payment has been sent
+Mime-Version: 1.0
+Reply-To: No-Reply <no-reply@mycase.com>
+X-SG-EID: 
+ =?us-ascii?Q?u001=2ENAyBRzwuup0G8lmp8qAkl0gA7LDwRccLBRyRrcB5ujYHuj+KZVWKQ21j7?=
+ =?us-ascii?Q?6yDXgzrU6paSVwZr=2FLlPdI4912nFkekYpTA3Qvm?=
+ =?us-ascii?Q?ONEDocFNKv6PIFu6E136HDQ8QZ+A6uDEULMtCTd?=
+ =?us-ascii?Q?YGID2COeVmC5OHsmvyPdI5xHNgRFfDHzEHNxnmg?=
+ =?us-ascii?Q?HCPSdJY1gl0GB2OH29n91FKTBVL0RpZeY2so2mP?=
+ =?us-ascii?Q?+inryVyoihZLkVSXJ0HQCq6t+ZHDrsm3tmyOC1L?=
+ =?us-ascii?Q?XSwVo9IfD3v8lqJFAk7ESdHqZw=3D=3D?=
+To: James Mitterling <James.Mitterling@icloud.com>
+X-Entity-ID: u001.lxQqC5abhptDMiGHjl4hPA==
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_69824e54e8c7_fa3ad3c2308049a3";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-MANTSH: 1TFkXHh0RCllEF21hBU5HbUNmZVJ+EQpZTRdkRURPEQpZSRcacRoQGncGGB1xEx0
+ cEB8YG3cGGBoGGhEKWV4XbGx5EQpDThdCeG14eXUHTmhCSE1uHkZLW0wHZXBwfhNiUkNnRlkfZ
+ BEKWFwXGQQaBB8eBRsaBBscHwQYGAQYHhwQGx4aHxoRCl5ZF01eBWZTEQpNXBceHxIRCkxaF2l
+ rbW9NTREKTEYXTWsRCkNaFxsZHgQbGBIEGxscBBoRCkJeFxsRCkJcFxsRCl5OFxsRCkJLF21SW
+ BhbUx5ofmJwEQpCSRdtUlgYW1MeaH5icBEKQkUXbmhZRUVyRUBBbUURCkJOF21SWBhbUx5ofmJ
+ wEQpCTBdlWmx+cFwFbFBaTBEKQmwXbxtuEmFcfBliSQERCkJAF2BbQHN/fWsbfUh4EQpCWBdmR
+ 0ByHh0SBRxQSREKWlgXGxEKcGgXaRpmG2F9ZEl4eEkQBxkaEQpwaBdlUxMcf1kZZlNTQhAaEQp
+ waBdlYX8bbkNweWhDQxAaEQpwaBdrYnJkSxl6flhHXhAHGRoRCnBoF2gaZm1uWEAcHRsbEBoRC
+ nBoF2hJQGYBE0RAaFB9EBoRCnBoF2ZAc2BhemBwH0dnEBoRCnBoF2xwaWZvE21jRF9oEBoRCnB
+ /F2J6fGdubkJtSEtjEAcSHxEKcF8XYx9+SXJ5BU1yHXAQBx4SEQpwfRdtRntTWEJobEkSWxAaE
+ QpwXxdsHH5TTxgeaWsbXxAHHhIRCnB9F2dyS19jQUVPRH1yEBoRCnBsF2tIfFMBGhhcW2VIEBo
+ RCnBMF2QTH1MZfkRPQ1x/EBoRCm1+FxoRClhNF0sR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAzMDE1NiBTYWx0ZWRfX2Ddd0Zvw8Tf4
+ Ogiqeqmz00GXcMTYYEUxIC9mRlGQrD1Nox3zlEr8MADrby9eGPSdWhO0dv8shlrKZjGp8cMP42/
+ 2RQBvgY6M6sbHj9IpbDKk0La/khNxyWy+8lkDX6z1AISSw5IecVkoQVxijxdBdLWG9HoFETV/S5
+ aAmBP5YlMW3szMWvMxaA2XYmwuJ6O//HajilvNvoc67pbz+WPmRgoIhg/ep9ZVR0GjjTpeCFHD+
+ 66dcZ4X/KNjjuaOTGTk8/9vriN2gOoXRcJHeQAzJzDERIP1YljXQX7ctS/eAZSLPIGfP7GBF9Vc
+ fPAtQxndEfQPvp0nt1Z
+X-Proofpoint-GUID: hRGRS_-dBhbgD4laqf-OZZT9HxiMls5N
+X-Proofpoint-ORIG-GUID: hRGRS_-dBhbgD4laqf-OZZT9HxiMls5N
+X-JNJ: AAAAAAABr/QEhB4LPbVrl2HYp4x3SkaL1wgVlhC0Fnz0q9WZWbuBDxuwjWZTMSP4GmP+Morc/J8WDd4YKgthey/AP/xJ1/b+MeKIpLI1og3fFr/v75TlzsM4Sa2Dc7O5Mi8l17cCXYREPseGpvU1wxgLu+q3I7M2kI0GyszFDBNFm3XpaQCvR+Hqq+iDqQbULgii/CSvWV1iv7s5bQnya1VUUD52hN0op/FJG3WjgNjF22xF8+PQO0D14UtfKPhY0urPZdzHG8LXaUCWVXV6UWGYdv4Gf3UVKce18Q9Q14N087hpmSYmnF7rufwwf6/nIvR5JWnwD5VxYXXHE6YGh8TUUDy9dPeWfSVJR4VwJk1XRwg/019FG6GZIohUNU+1OnJpQ/71Pe5Ss+dQ8s9F/Al7G6R6j/yglb0d4fbvW9x8Pqvb1jkDtybcPKhUNTo3QAI7JCxjPuHRMPPTSuevqflZGONCHle/M3TGi8UNb4uc3cuCdsaZynsbi4FbG5+TRHcDpxnaLsElqe/lQvE+YaakDokqo4EICu0NN4gH6eotjZK3kFEFpIyOz3twjd9dacorYLB5TY0XDs5fD7jVhcQMD/jlrbAUAffWoldKXDNiYnGQAs7W2MN8BDXrbhGD4eWWgToMQoTzlKyyKzqbGQ6OtL+cub6gaDFo7gLy1OSgqcARYEP0ZJyBRZeaj0UBrKqrKQRTQbUXHr1Fva3t+l/gHreOy+JlVLuPrLPbxgH75PJI+38TV0nPqk3lL2dzklkiemSp5bnxu09DO5NibSyCJlW4duF8fLQfs+L6hOrBhoHoVMpQICzRaVamKlWGhcpBJUz9MUip/3U58UU6SV+UKOUa4YS0lSG6WhXrIBx1WzX03zmPggV/u3rG1GY3gmzVo+pEPoCa0yQSyCR3IuT76TU7u+EkYXKjr9r6j5CV4/Sq9ZyTNUomrqQ4PDZ/yRCj1SLj4rEkKXfgms530iaXRsg7P4Cu6bA=
+
+
+----==_mimepart_69824e54e8c7_fa3ad3c2308049a3
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Payment Sent
+
+Your payment of $50.00 on Mastercard ending in 5184 has been sent.
+
+  Invoice #02314 Formation of Fresh Roots LLC 2026
+    Invoice: $50.00
+  Confirmation number #855-FBEB9
+
+
+Note: Your credit card statement will reflect one transaction per invoice.
+
+  This email was sent to you by Bradley J. Nicoll, Attorney at Law
+  8am MyCase
+
+----==_mimepart_69824e54e8c7_fa3ad3c2308049a3
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<!-- Template Source: https://github.com/leemunroe/responsive-html-email-template --><html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>
+  Payment Sent
+</title>
+      
+
+    
+
+    <style id="not-inlined">
+      @media only screen and (max-width: 620px) {
+        table[class=body] p,
+        table[class=body] ul,
+        table[class=body] ol,
+        table[class=body] td,
+        table[class=body] span,
+        table[class=body] a {
+          font-size: 16px !important; }
+        table[class=body] .btn table {
+          width: 100% !important; }
+        table[class=body] .btn a {
+          width: 80% !important; }
+        table[class=body] .bottom>td {
+          padding: 20px !important; }
+        table[class=body] .footer td,
+        table[class=body] .footer p,
+        table[class=body] .footer span,
+        table[class=body] .footer a {
+          font-size: 12px !important; }
+      @media all {
+        .ExternalClass {
+          width: 100%; }
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+          line-height: 100%; }
+    </style>
+  </head>
+  <body style="background-color:white;font-family:sans-serif;-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.4;margin:0;padding:0;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%">
+
+    <table id="email_content" border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%">
+      <tr>
+        <td class="container" style="font-family:sans-serif;font-size:14px;vertical-align:top">
+          <div class="content" style="padding-left:30px;padding-top:30px;max-width:700px">
+            <span class="hidden" style="color:transparent;display:none;height:0;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;visibility:hidden;width:0">
+  Payment Sent
+</span>
+
+            <section class="message-section" style="text-align:left;margin-bottom:10px">
+              <div class="message">  <div>
+    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;overflow-wrap:break-word;word-wrap:break-word;word-break:break-word;margin-bottom:10px">
+      Your payment of $50.00 on Mastercard ending in 5184 has been sent.
+    </p>
+      <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;overflow-wrap:break-word;word-wrap:break-word;word-break:break-word;margin-bottom:10px">
+        <strong>Invoice #02314</strong> Formation of Fresh Roots LLC 2026
+        <br>
+
+          Invoice: $50.00
+
+        <br>
+        Confirmation number #855-FBEB9
+      </p>
+        <hr>
+    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;overflow-wrap:break-word;word-wrap:break-word;word-break:break-word;margin-bottom:10px">
+      <i>*Note: Your credit card statement will reflect one transaction per invoice.</i>
+    </p>
+  </div>
+</div>
+            </section>
+
+            
+
+
+            <section class="closing-section" style="margin:20px 0">
+              <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;overflow-wrap:break-word;word-wrap:break-word;word-break:break-word;margin-bottom:10px">
+                  Thank you,<br>
+                  Bradley J. Nicoll, Attorney at Law
+              </p>
+            </section>
+
+            
+
+            <footer class="footer" style="margin-top:40px">
+              <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;overflow-wrap:break-word;word-wrap:break-word;word-break:break-word;margin-bottom:10px;color:#6e6e6e;font-size:12px">
+                This is an automated notification. To protect the confidentiality of these communications,<br>
+                <b>PLEASE DO NOT REPLY TO THIS EMAIL.</b>
+              </p>
+              <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;overflow-wrap:break-word;word-wrap:break-word;word-break:break-word;margin-bottom:10px;color:#6e6e6e;font-size:12px">
+                This email was sent to you by Bradley J. Nicoll, Attorney at Law. <br>
+                <a href="https://u56160400.ct.sendgrid.net/ls/click?upn=u001.r-2FJHpNrxifP5lxCE4SqVZjPtFA2EtSgThTulDQ3cTSs-3D-a5n_pYzszJtWvDo4XrPcIrPEj8KJDY6rtJesVP1qnCQYDfwK3WCR2bBFbkQ6H4ERzq6XO4BJWl-2BI3N4as1ENN-2BmdVIQc5t0MJRIRHNPtJbskBClnlJlBDhTU7F7bLu0CXlZ3UwuqaE2B1UoxaWKf35iwf6H4tBOcs3ydaP2XTv4CMAfDqxT4zZVbNdVv5QpUlTyeE2oPHIbLl5Edh-2BPbng66TQ-3D-3D" style="color:#3498db;text-decoration:underline;color:#6e6e6e;font-size:12px;color:#4D83B5">8am MyCase</a>
+              </p>
+            </footer>
+
+            
+          </div>
+        </td>
+      </tr>
+    </table>
+  <img src="https://u56160400.ct.sendgrid.net/wf/open?upn=u001.ET8Om7QdJ9a-2BhFxAwT9z7vOdWBZZsTB-2B6GXmYWxNNVrCt7whBYDY91a-2FhT06ckMApIgOWp-2FZPO0xiA2RIncgxbdhyGENdPImP1ZOyRz7K-2BI0ZX9NDmUlOqlCMdvNpVLrD64JWAjoS9cB0gnIwuYEtjGnzS6Lc5A0HZcaMIigGi1fuSlJVa98gpn47gJS1obg5xvllHfaPGQEcGdihkAwUwcq9pmafSjfDScDL2IoTqg-3D" alt="" width="1" height="1" border="0" style="height:1px !important;width:1px !important;border-width:0 !important;margin-top:0 !important;margin-bottom:0 !important;margin-right:0 !important;margin-left:0 !important;padding-top:0 !important;padding-bottom:0 !important;padding-right:0 !important;padding-left:0 !important;"/></body>
+</html>
+
+----==_mimepart_69824e54e8c7_fa3ad3c2308049a3--
