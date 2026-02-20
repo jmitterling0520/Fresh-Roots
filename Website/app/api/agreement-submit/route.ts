@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
-import { writeFile, readFile, mkdir } from 'fs/promises'
-import path from 'path'
 import { randomUUID } from 'crypto'
 import { Resend } from 'resend'
+import { saveSubmission } from '@/lib/agreement-storage'
 
 export type AgreementSubmission = {
   token: string
@@ -15,11 +14,6 @@ export type AgreementSubmission = {
   signature_image: string | null
   client_signer_date: string
   approved?: boolean
-}
-
-function getSubmissionsPath(): string {
-  const dir = path.join(process.cwd(), 'data')
-  return path.join(dir, 'agreement-submissions.json')
 }
 
 function validate(body: Record<string, unknown>): { ok: true; data: AgreementSubmission } | { ok: false; error: string } {
@@ -101,18 +95,7 @@ export async function POST(request: Request) {
       received_at: new Date().toISOString(),
     }
 
-    const filePath = getSubmissionsPath()
-    const dir = path.dirname(filePath)
-    let existing: AgreementSubmission[] = []
-    try {
-      const raw = await readFile(filePath, 'utf-8')
-      const parsed = JSON.parse(raw)
-      existing = Array.isArray(parsed) ? parsed : []
-    } catch {
-      await mkdir(dir, { recursive: true })
-    }
-    existing.push(submission)
-    await writeFile(filePath, JSON.stringify(existing, null, 2), 'utf-8')
+    await saveSubmission(submission)
 
     const baseUrl = getBaseUrl(request)
     const approvalUrl = `${baseUrl}/agreement/approve/${submission.token}`

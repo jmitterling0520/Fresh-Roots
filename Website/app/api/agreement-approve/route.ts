@@ -1,12 +1,5 @@
 import { NextResponse } from 'next/server'
-import { readFile, writeFile } from 'fs/promises'
-import path from 'path'
-import type { AgreementSubmission } from '../agreement-submit/route'
-
-function getSubmissionsPath(): string {
-  const dir = path.join(process.cwd(), 'data')
-  return path.join(dir, 'agreement-submissions.json')
-}
+import { getSubmissionByToken, updateSubmission } from '@/lib/agreement-storage'
 
 type ApprovalPayload = {
   token: string
@@ -117,30 +110,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Consultant name, title, and signature are required' }, { status: 400 })
     }
 
-    const filePath = getSubmissionsPath()
-    const raw = await readFile(filePath, 'utf-8')
-    const submissions: (AgreementSubmission & { token?: string; approved?: boolean })[] = JSON.parse(raw)
-    const idx = submissions.findIndex((s) => (s as { token?: string }).token === token)
-    if (idx < 0) {
+    const sub = await getSubmissionByToken(token)
+    if (!sub) {
       return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
     }
-    const sub = submissions[idx]
     if (sub.approved) {
       return NextResponse.json({ error: 'Agreement already approved' }, { status: 400 })
     }
 
     const approvalDate = consultantDate?.trim() || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-    const updated = {
-      ...sub,
+    await updateSubmission(token, {
       approved: true,
       consultant_name: consultantName.trim(),
       consultant_title: consultantTitle.trim(),
       consultant_signature: consultantSignature,
       consultant_date: approvalDate,
-    }
-    submissions[idx] = updated
-
-    await writeFile(filePath, JSON.stringify(submissions, null, 2), 'utf-8')
+    })
 
     const effectiveDate = approvalDate
     const html = buildCompletedAgreementHtml(
@@ -165,9 +150,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, html })
   } catch (err) {
     const e = err as NodeJS.ErrnoException & { message?: string }
-    if (e.code === 'ENOENT') {
-      return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
-    }
     console.error('Agreement approve POST error:', e)
     const msg = e.code === 'EACCES' || e.code === 'EROFS'
       ? 'Cannot save approval (read-only filesystem). If deployed on Vercel, file storage is not supported.'

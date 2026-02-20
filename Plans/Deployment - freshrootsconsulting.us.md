@@ -151,6 +151,21 @@ The contact form currently saves to a **file** (`data/submissions.json`). On Ver
 
 ---
 
+## Agreement Form on Vercel (Submit for Review)
+
+The agreement form at `/agreement` saves submissions and sends an approval link by email. On Vercel the filesystem is read-only, so the app uses **Upstash Redis** for storage when the env vars are set.
+
+**To enable agreement submissions in production:**
+
+1. Go to [Vercel Marketplace](https://vercel.com/marketplace) and search for **Upstash Redis** (or [Upstash Redis integration](https://vercel.com/integrations/upstash)).
+2. Add the integration to your project and follow the setup (create a Redis database if needed).
+3. Vercel will inject `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` into your project.
+4. Redeploy the site.
+
+If these env vars are **not** set (e.g. local dev), the app falls back to file storage (`data/agreement-submissions.json`).
+
+---
+
 ## Quick Reference
 
 | Step              | Where                    | Action |

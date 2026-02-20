@@ -1,12 +1,5 @@
 import { NextResponse } from 'next/server'
-import { readFile } from 'fs/promises'
-import path from 'path'
-import type { AgreementSubmission } from '@/app/api/agreement-submit/route'
-
-function getSubmissionsPath(): string {
-  const dir = path.join(process.cwd(), 'data')
-  return path.join(dir, 'agreement-submissions.json')
-}
+import { getSubmissionByToken } from '@/lib/agreement-storage'
 
 export async function GET(
   _request: Request,
@@ -18,19 +11,10 @@ export async function GET(
       return NextResponse.json({ error: 'Token required' }, { status: 400 })
     }
 
-    const filePath = getSubmissionsPath()
-    const raw = await readFile(filePath, 'utf-8')
-    const submissions: AgreementSubmission[] = JSON.parse(raw)
-    if (!Array.isArray(submissions)) {
-      return NextResponse.json({ error: 'Invalid data' }, { status: 500 })
-    }
-
-    const submission = submissions.find((s) => (s as AgreementSubmission & { token?: string }).token === token)
-    if (!submission) {
+    const sub = await getSubmissionByToken(token)
+    if (!sub) {
       return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
     }
-
-    const sub = submission as AgreementSubmission & { token?: string }
     if (sub.approved) {
       return NextResponse.json({ error: 'Agreement already approved' }, { status: 400 })
     }
@@ -46,9 +30,6 @@ export async function GET(
       client_signer_date: sub.client_signer_date,
     })
   } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
-      return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
-    }
     console.error('Agreement approve GET error:', err)
     return NextResponse.json({ error: 'Failed to load submission' }, { status: 500 })
   }
