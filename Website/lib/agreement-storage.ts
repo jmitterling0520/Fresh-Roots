@@ -27,9 +27,17 @@ function getSubmissionsPath(): string {
 
 function hasRedisEnv(): boolean {
   return Boolean(
-    process.env.UPSTASH_REDIS_REST_URL &&
-      process.env.UPSTASH_REDIS_REST_TOKEN
+    (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) ||
+      (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
   )
+}
+
+function getRedisUrl(): string {
+  return process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || ''
+}
+
+function getRedisToken(): string {
+  return process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || ''
 }
 
 export async function getSubmissionByToken(
@@ -39,8 +47,8 @@ export async function getSubmissionByToken(
     try {
       const { Redis } = await import('@upstash/redis')
       const redis = new Redis({
-        url: process.env.UPSTASH_REDIS_REST_URL!,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+        url: getRedisUrl(),
+        token: getRedisToken(),
       })
       const raw = await redis.get<string>(`${REDIS_KEY_PREFIX}${token}`)
       if (!raw) return null
@@ -72,8 +80,8 @@ export async function saveSubmission(
     try {
       const { Redis } = await import('@upstash/redis')
       const redis = new Redis({
-        url: process.env.UPSTASH_REDIS_REST_URL!,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+        url: getRedisUrl(),
+        token: getRedisToken(),
       })
       await redis.set(
         `${REDIS_KEY_PREFIX}${submission.token}`,
@@ -113,8 +121,8 @@ export async function updateSubmission(
     try {
       const { Redis } = await import('@upstash/redis')
       const redis = new Redis({
-        url: process.env.UPSTASH_REDIS_REST_URL!,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+        url: getRedisUrl(),
+        token: getRedisToken(),
       })
       await redis.set(
         `${REDIS_KEY_PREFIX}${token}`,

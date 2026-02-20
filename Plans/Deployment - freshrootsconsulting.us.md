@@ -159,10 +159,10 @@ The agreement form at `/agreement` saves submissions and sends an approval link 
 
 1. Go to [Vercel Marketplace](https://vercel.com/marketplace) and search for **Upstash Redis** (or [Upstash Redis integration](https://vercel.com/integrations/upstash)).
 2. Add the integration to your project and follow the setup (create a Redis database if needed).
-3. Vercel will inject `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` into your project.
+3. Vercel will inject `KV_REST_API_URL` and `KV_REST_API_TOKEN` (and related vars) into your project.
 4. Redeploy the site.
 
-If these env vars are **not** set (e.g. local dev), the app falls back to file storage (`data/agreement-submissions.json`).
+If Redis env vars (`KV_REST_API_URL` + `KV_REST_API_TOKEN`, or `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`) are not set (e.g. local dev), the app falls back to file storage (`data/agreement-submissions.json`).
 
 ---
 
