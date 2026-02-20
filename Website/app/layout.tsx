@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import React from 'react'
+import { Radley } from 'next/font/google'
 import './globals.css'
+
+const radley = Radley({ weight: '400', subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Fresh Roots Consulting, LLC | Process & Technology Efficiency Consulting',
@@ -14,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={radley.className}>{children}</body>
     </html>
   )
 }

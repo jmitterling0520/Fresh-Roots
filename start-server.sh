@@ -19,4 +19,4 @@ echo ""
 echo "Press Ctrl+C to stop the server"
 echo ""
 
-npm run dev -- -p 8080
+npm run dev:8080

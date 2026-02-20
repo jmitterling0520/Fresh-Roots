@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p ${PORT:-3000}",
+    "dev:8080": "next dev -p 8080",
     "build": "next build",
     "start": "next start -p ${PORT:-3000}",
     "lint": "next lint"

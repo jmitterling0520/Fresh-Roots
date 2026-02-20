@@ -1,11 +1,8 @@
-import RootsPattern from './RootsPattern'
-
 export default function Hero() {
   return (
     <section className="hero">
-      <RootsPattern />
       <div className="hero-content">
-        <h1>Fresh Roots</h1>
+        <h1>FRESH ROOTS</h1>
         <p style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '0.5rem' }}>
           <span style={{ color: 'white', fontSize: '1.2rem' }}>From</span>{' '}
           <span style={{ color: '#FFEB3B' }}>Strength</span>{' '}

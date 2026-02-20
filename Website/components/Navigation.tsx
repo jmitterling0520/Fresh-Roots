@@ -4,7 +4,11 @@ export default function Navigation() {
   return (
     <nav>
       <div className="nav-container">
-        <Link href="/" className="logo">Fresh Roots</Link>
+        <Link href="/" className="logo">
+          <img src="/Fresh-roots-Logo-transparent.png" alt="" className="nav-logo" aria-hidden />
+          Fresh Roots
+        </Link>
+
         <ul className="nav-links">
           <li><a href="#about">About</a></li>
           <li><a href="#services">Services</a></li>

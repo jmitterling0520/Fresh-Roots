@@ -41,9 +41,20 @@ nav {
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--primary-color);
+  text-decoration: none;
+}
+
+.nav-logo {
+  display: block;
+  height: 2.75rem;
+  width: auto;
+  object-fit: contain;
 }
 
 .logo-link {
@@ -230,6 +241,126 @@ nav {
   position: relative;
   line-height: 1.5;
   margin-bottom: 1rem;
+}
+
+/* About teaser: compact default view */
+.about-teaser {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  color: var(--text-dark);
+}
+
+.about-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.about-expand-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--primary-color);
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.about-expand-btn:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.about-expand-btn[aria-expanded="true"] {
+  background: var(--primary-dark);
+  color: white;
+  border-color: var(--primary-dark);
+}
+
+.about-direct-link {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s, text-decoration 0.2s;
+}
+
+.about-direct-link:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+.about-expanded {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  animation: aboutExpand 0.25s ease-out;
+}
+
+@keyframes aboutExpand {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.about-expanded p {
+  margin-bottom: 1rem;
+}
+
+.about-expanded p:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Roots intro block: designed lead into expanded content */
+.about-roots-intro {
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.about-roots-diagram {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1.25rem;
+}
+
+.about-roots-intro-lead {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.about-roots-intro-body {
+  font-size: 1rem;
+  color: var(--text-dark);
+  margin-bottom: 0;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+.about-subhead {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.about-callout {
+  background-color: rgba(198, 198, 198, 0.9);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Adjust pattern positioning to align with text */
