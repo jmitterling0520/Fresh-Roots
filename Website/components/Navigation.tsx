@@ -10,10 +10,10 @@ export default function Navigation() {
         </Link>
 
         <ul className="nav-links">
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#expertise">Expertise</a></li>
-          <li><a href="#contact">How to Engage</a></li>
+          <li><Link href="/#about">About</Link></li>
+          <li><Link href="/#services">Services</Link></li>
+          <li><Link href="/#expertise">Expertise</Link></li>
+          <li><Link href="/#contact">How to Engage</Link></li>
         </ul>
       </div>
     </nav>

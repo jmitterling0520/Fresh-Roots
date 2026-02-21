@@ -1,98 +1,17 @@
 import { NextResponse } from 'next/server'
 import { getSubmissionByToken, updateSubmission } from '@/lib/agreement-storage'
+import { buildCompletedAgreementHtml } from '@/lib/agreement-html'
+import { createMagicToken } from '@/lib/agreement-magic'
 
-type ApprovalPayload = {
-  token: string
-  consultant_name: string
-  consultant_title: string
-  consultant_signature: string
-  consultant_date: string
-}
-
-function buildCompletedAgreementHtml(
-  client: { client_name: string; signer_name: string; signer_title: string; client_signer_date: string; cap_hours: string; cap_dollars: string; signature_image: string | null },
-  consultant: { consultant_name: string; consultant_title: string; consultant_signature: string; consultant_date: string },
-  effectiveDate: string
-): string {
-  const displayCapHours = client.cap_hours || '__________'
-  const displayCapDollars = client.cap_dollars || '__________'
-  const clientSig = client.signature_image
-    ? `<img src="${client.signature_image}" alt="Client signature" style="max-width:200px;max-height:60px;object-fit:contain;" />`
-    : '__________________________'
-  const consultantSig = consultant.consultant_signature
-    ? `<img src="${consultant.consultant_signature}" alt="Consultant signature" style="max-width:200px;max-height:60px;object-fit:contain;" />`
-    : '__________________________'
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fresh Roots Consulting - Agreement (Executed)</title>
-<style>
-body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.4; max-width: 8.5in; margin: 1in auto; padding: 0 1in; }
-h1 { font-size: 14pt; text-align: center; margin-bottom: 0.5em; }
-h2 { font-size: 12pt; font-weight: bold; margin-top: 1em; margin-bottom: 0.25em; }
-p { margin: 0.5em 0; text-align: justify; }
-ul { margin: 0.25em 0; padding-left: 1.5em; }
-li { margin: 0.15em 0; }
-table { border-collapse: collapse; width: 100%; margin: 0.75em 0; }
-th, td { border: 1px solid #000; padding: 0.35em 0.5em; text-align: left; }
-th { font-weight: bold; }
-.sig-table { border: none; }
-.sig-table td { border: none; padding: 0.25rem 1rem 0.25rem 0; }
-hr { margin: 2em 0; border: none; border-top: 1px solid #ccc; }
-@media print { body { margin: 0.5in; } }
-</style>
-</head>
-<body>
-
-<h1>Fresh Roots Consulting<br>Technology and Process Efficiency<br>Month to Month Agreement</h1>
-
-<p>This Month to Month Retainer Agreement ("Agreement") is entered into as of ${effectiveDate} (the "Effective Date") between <strong>Fresh Roots Consulting, LLC</strong> ("Consultant"), with its principal place of business at 1100 S Second Ave, Alpena, MI 49707, and <strong>${client.client_name}</strong> ("Client").</p>
-
-<p>This is a standalone agreement. The Standard Terms and Conditions in <strong>Exhibit A</strong> are incorporated by reference and apply to this Agreement.</p>
-
-<p><strong>WHEREAS</strong>, Consultant is engaged in operations optimization and technology efficiency consulting (the "Services"), and Client desires to engage Consultant to provide such Services on a month-to-month retainer basis.</p>
-
-<p><strong>NOW THEREFORE</strong>, Consultant and Client agree as follows:</p>
-
-<h2>1. Scope of Services</h2>
-<p>Consultant will provide professional services consisting of operations optimization and technology efficiency consulting, delivered remotely via web conference, phone, and email. Services are organized as Operations Optimization (Process Inefficiencies Analysis, Process Assessment &amp; Analysis, Efficiency Improvement Roadmaps, etc.) and Technology Efficiency (Technology Inefficiencies Analysis, Technology Stack Assessment, etc.).</p>
-
-<h2>2. Service Plan, Rate, and Payment Terms</h2>
-<p>Consultant's rate is <strong>$150.00 per hour</strong>. Client will be invoiced at the end of each month for Services performed during the prior month.</p>
-<p><em>Monthly cap (if elected): ${displayCapHours} hours or $${displayCapDollars}</em></p>
-
-<h2>3. Service Hours and Response Time</h2>
-<p>Services: Monday–Friday, 9:00 a.m.–5:00 p.m. Eastern. Response: next business day.</p>
-
-<h2>4. Term and Termination</h2>
-<p>Month to month; auto-renews unless Client provides written notice at the beginning of the last week of the month. Either party may terminate for breach with 14 days' notice and opportunity to cure.</p>
-
-<h2>5. Terms in This Agreement Prevail</h2>
-<p>In the event of any conflict, the terms of this Agreement control.</p>
-
-<table class="sig-table">
-<tr><td><strong>Client:</strong></td><td>${client.client_name}</td></tr>
-<tr><td>Name:</td><td>${client.signer_name}</td></tr>
-<tr><td>Title:</td><td>${client.signer_title}</td></tr>
-<tr><td>Signed:</td><td>${clientSig}</td></tr>
-<tr><td>Date:</td><td>${client.client_signer_date}</td></tr>
-<tr><td colspan="2" style="height:1em;"></td></tr>
-<tr><td><strong>Fresh Roots Consulting, LLC</strong></td><td></td></tr>
-<tr><td>Name:</td><td>${consultant.consultant_name}</td></tr>
-<tr><td>Title:</td><td>${consultant.consultant_title}</td></tr>
-<tr><td>Signed:</td><td>${consultantSig}</td></tr>
-<tr><td>Date:</td><td>${consultant.consultant_date}</td></tr>
-</table>
-
-<hr>
-<h1>EXHIBIT A – STANDARD TERMS AND CONDITIONS</h1>
-<p>Payment terms, acceptance of deliverables, ownership of IP, confidentiality, non-solicitation, limitation of liability, arbitration, and miscellaneous terms apply as set forth in the standard Fresh Roots Consulting agreement terms.</p>
-
-</body>
-</html>`
+function getBaseUrl(request: Request): string {
+  const url = process.env.NEXT_PUBLIC_SITE_URL
+  if (url) return url.replace(/\/$/, '')
+  const vercel = process.env.VERCEL_URL
+  if (vercel) return `https://${vercel}`
+  const host = request.headers.get('x-forwarded-host') || request.headers.get('host')
+  const proto = request.headers.get('x-forwarded-proto') || 'http'
+  if (host) return `${proto}://${host}`
+  return 'http://localhost:3000'
 }
 
 export async function POST(request: Request) {
@@ -128,6 +47,7 @@ export async function POST(request: Request) {
     })
 
     const effectiveDate = approvalDate
+    const baseUrl = getBaseUrl(request)
     const html = buildCompletedAgreementHtml(
       {
         client_name: sub.client_name,
@@ -144,10 +64,18 @@ export async function POST(request: Request) {
         consultant_signature: consultantSignature,
         consultant_date: approvalDate,
       },
-      effectiveDate
+      effectiveDate,
+      baseUrl
     )
 
-    return NextResponse.json({ ok: true, html })
+    let accessToken: string | undefined
+    try {
+      accessToken = await createMagicToken(token, sub.email)
+    } catch {
+      // Magic links require Redis; continue without if unavailable
+    }
+
+    return NextResponse.json({ ok: true, html, accessToken })
   } catch (err) {
     const e = err as NodeJS.ErrnoException & { message?: string }
     console.error('Agreement approve POST error:', e)

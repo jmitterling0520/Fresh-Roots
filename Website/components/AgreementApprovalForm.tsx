@@ -33,6 +33,7 @@ export default function AgreementApprovalForm({ token, submission }: AgreementAp
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
   const [error, setError] = useState<string | null>(null)
   const [completedHtml, setCompletedHtml] = useState<string | null>(null)
+  const [accessToken, setAccessToken] = useState<string | null>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const isDrawingRef = useRef(false)
   const lastPointRef = useRef<{ x: number; y: number } | null>(null)
@@ -170,6 +171,7 @@ export default function AgreementApprovalForm({ token, submission }: AgreementAp
       const data = await res.json()
       if (res.ok) {
         setCompletedHtml(data.html)
+        setAccessToken(data.accessToken || null)
         setStatus('success')
       } else {
         setError(data.error || 'Failed to approve')
@@ -200,9 +202,18 @@ export default function AgreementApprovalForm({ token, submission }: AgreementAp
             <div className="privacy-content agreement-content">
               <h1>Agreement Approved</h1>
               <p>Your signature has been applied. The completed agreement includes both the client and Fresh Roots Consulting signatures.</p>
-              <button type="button" onClick={openCompletedAgreement} className="agreement-submit-btn">
-                Open completed agreement
-              </button>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
+                <Link
+                  href={accessToken ? `/agreement/view/${token}?access=${accessToken}` : `/agreement/view/${token}`}
+                  className="agreement-submit-btn"
+                  style={{ display: 'inline-block', textAlign: 'center', textDecoration: 'none' }}
+                >
+                  View and download agreement
+                </Link>
+                <button type="button" onClick={openCompletedAgreement} className="agreement-submit-btn" style={{ background: '#4a5568' }}>
+                  Open in new tab
+                </button>
+              </div>
               <p style={{ marginTop: '1rem' }}>
                 <Link href="/">← Back to home</Link>
               </p>

@@ -164,6 +164,21 @@ The agreement form at `/agreement` saves submissions and sends an approval link 
 
 If Redis env vars (`KV_REST_API_URL` + `KV_REST_API_TOKEN`, or `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`) are not set (e.g. local dev), the app falls back to file storage (`data/agreement-submissions.json`).
 
+### Agreement view (magic link)
+
+After approval, the agreement is viewable at `/agreement/view/[token]` only via a **magic link**. When someone visits without a valid link, they see an email form; after entering an authorized email, a time-limited link is emailed to them (valid 24 hours).
+
+**Requirements:**
+- **Redis** (same as above) — magic tokens are stored in Redis.
+- **Resend** — `RESEND_API_KEY` and `CONTACT_FORM_FROM_EMAIL` (see [Contact Form - Resend Setup](Contact%20Form%20-%20Resend%20Setup.md)).
+- **Consultant access** — `CONTACT_FORM_TO_EMAIL` or `CONSULTANT_EMAIL` so you (the consultant) can request a magic link with your own email.
+
+| Variable | Purpose |
+|----------|---------|
+| `RESEND_API_KEY` | Sends the magic link email via Resend. |
+| `CONTACT_FORM_FROM_EMAIL` | "From" address for magic link emails (optional; defaults to `Fresh Roots Consulting <onboarding@resend.dev>`). |
+| `CONTACT_FORM_TO_EMAIL` or `CONSULTANT_EMAIL` | Email(s) allowed to request a magic link for any agreement. `CONTACT_FORM_TO_EMAIL` is typically your main email; `CONSULTANT_EMAIL` can be set separately. |
+
 ---
 
 ## Quick Reference

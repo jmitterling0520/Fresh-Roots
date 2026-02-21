@@ -6,6 +6,9 @@
 # Navigate to Website directory
 cd "$(dirname "$0")/Website" || exit 1
 
+# Raise file descriptor limit to avoid EMFILE (too many open files)
+ulimit -n 10240 2>/dev/null || true
+
 # Check if node_modules exists
 if [ ! -d "node_modules" ]; then
     echo "⚠️  node_modules not found. Installing dependencies..."
