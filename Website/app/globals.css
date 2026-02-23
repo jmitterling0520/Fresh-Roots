@@ -496,6 +496,117 @@ nav {
   font-weight: bold;
 }
 
+/* Challenges Section */
+.challenges {
+  padding: 4rem 2rem;
+  background-color: var(--bg-light);
+}
+
+.challenges-subtitle {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.challenges-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+.challenges-group-title {
+  font-size: 1.35rem;
+  color: var(--primary-dark);
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+}
+
+.challenges-group-description {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin-bottom: 1.25rem;
+  font-style: italic;
+}
+
+.challenges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.challenge-card {
+  background-color: var(--bg-white);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid var(--primary-color);
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+
+.challenge-card:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.challenge-problem {
+  font-size: 1.05rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.challenge-quote {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.challenge-solution {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+  line-height: 1.55;
+}
+
+.challenge-link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.challenge-link:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+.challenges-cta {
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.challenges-cta p {
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.challenges-cta a:not(.cta-button) {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.challenges-cta a:not(.cta-button):hover {
+  text-decoration: underline;
+}
+
 /* Testimonial Section */
 .testimonial {
   background: linear-gradient(135deg, rgba(91, 107, 125, 0.75) 0%, rgba(58, 69, 86, 0.75) 100%),

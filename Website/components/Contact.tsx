@@ -57,7 +57,7 @@ export default function Contact() {
               <div>
                 <h3 style={{ color: 'white', marginBottom: '0.5rem' }}>Learn</h3>
                 <p style={{ marginBottom: 0 }}>
-                  See what we do: <a href="#about">About</a>, <a href="#services">Services</a>, and <a href="#expertise">Expertise</a>.
+                  See what we do: <a href="#about">About</a>, <a href="#challenges">Challenges</a>, <a href="#services">Services</a>, and <a href="#expertise">Expertise</a>.
                 </p>
               </div>
             </div>

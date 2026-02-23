@@ -11,6 +11,7 @@ export default function Navigation() {
 
         <ul className="nav-links">
           <li><Link href="/#about">About</Link></li>
+          <li><Link href="/#challenges">Challenges</Link></li>
           <li><Link href="/#services">Services</Link></li>
           <li><Link href="/#expertise">Expertise</Link></li>
           <li><Link href="/#contact">How to Engage</Link></li>
