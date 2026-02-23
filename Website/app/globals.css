@@ -558,11 +558,19 @@ nav {
 }
 
 .challenge-quote {
+  margin-bottom: 0.75rem;
+}
+
+.challenge-quote-line {
   font-size: 0.9rem;
   color: var(--text-light);
   font-style: italic;
-  margin-bottom: 0.75rem;
   line-height: 1.5;
+  margin: 0 0 0.5rem 0;
+}
+
+.challenge-quote-line:last-child {
+  margin-bottom: 0;
 }
 
 .challenge-solution {
