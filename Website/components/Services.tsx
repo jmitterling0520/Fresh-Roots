@@ -56,7 +56,7 @@ export default function Services() {
           subHeader: 'Plan',
           items: [
             'Technology Stack Assessment and Analysis',
-            'Technology improvement roadmaps & education plans',
+            'Technology improvement roadmaps & education plans (Project Rollout)',
           ],
         },
         {

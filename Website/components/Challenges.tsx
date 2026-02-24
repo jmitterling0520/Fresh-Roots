@@ -119,7 +119,7 @@ export default function Challenges() {
       <div className="container">
         <h2 className="section-title">Challenges We Help With</h2>
         <p className="section-subtitle challenges-subtitle">
-          Many small and family-owned businesses run into the same operational and technology issues. If any of these sound familiar, we can connect them to concrete solutions—process, systems, and incremental improvement.
+          Many small and family-owned businesses run into the same operational and technology issues. If any of these sound familiar, we can connect you to concrete solutions—process, systems, and incremental improvement.
         </p>
         <div className="challenges-groups">
           {challengeGroups.map((group, groupIndex) => (

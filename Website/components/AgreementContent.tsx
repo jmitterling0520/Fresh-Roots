@@ -338,7 +338,7 @@ export default function AgreementContent({ effectiveDate }: AgreementContentProp
 
       <p><strong>NOW THEREFORE</strong>, Consultant and Client agree as follows:</p>
 
-      <h2>1. Scope of Services</h2>
+      <h2>1. Services</h2>
 
       <p>Consultant will provide professional services consisting of operations optimization and technology efficiency consulting, delivered remotely via web conference, phone, and email. No on-site travel is included unless separately agreed in writing. Services are organized as follows:</p>
 
