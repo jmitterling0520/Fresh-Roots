@@ -122,7 +122,9 @@ export async function POST(request: Request) {
     }
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('Agreement submit error:', err)
+    const msg = err instanceof Error ? err.message : String(err)
+    const code = err instanceof Error && 'code' in err ? String((err as { code?: string }).code) : ''
+    console.error('Agreement submit error:', msg, code ? `[${code}]` : '')
     if (process.env.VERCEL === '1' && !(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)) {
       console.error('Hint: Set KV_REST_API_URL and KV_REST_API_TOKEN in Vercel → Settings → Environment Variables, then redeploy.')
     }

@@ -89,7 +89,9 @@ export async function saveSubmission(
       )
       return
     } catch (err) {
-      console.error('Redis set error:', err)
+      const msg = err instanceof Error ? err.message : String(err)
+      const code = err instanceof Error && 'code' in err ? String((err as { code?: string }).code) : ''
+      console.error('Redis set error:', msg, code ? `[${code}]` : '')
       throw err
     }
   }
