@@ -123,6 +123,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('Agreement submit error:', err)
+    if (process.env.VERCEL === '1' && !(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)) {
+      console.error('Hint: Set KV_REST_API_URL and KV_REST_API_TOKEN in Vercel → Settings → Environment Variables, then redeploy.')
+    }
     return NextResponse.json(
       { error: 'Failed to save submission' },
       { status: 500 }
