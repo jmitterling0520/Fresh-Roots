@@ -5,7 +5,7 @@ Use these categories in the **Tax Category** column of `transactions.csv` for ex
 | Category | Schedule C line | Notes |
 |----------|-----------------|--------|
 | Advertising | 8 | |
-| Car and truck expenses | 9 | Mileage or actual expenses |
+| Car and truck expenses | 9 | Mileage or actual expenses. **Standard mileage:** use the IRS business rate for the calendar year of the trip; document miles (log or route map). **Do not** use “Travel” for local driving—Travel is for trips away from home (lodging, flights, etc.). |
 | Commissions and fees | 10 | |
 | Contract labor | 11 | Subcontractors, freelancers |
 | Depreciation and section 179 | 12 | See Form 4562 |

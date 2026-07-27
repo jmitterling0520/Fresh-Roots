@@ -1,0 +1,2 @@
+InvoiceNumber,Client,IssueDate,PeriodStart,PeriodEnd,Amount,Hours,Status,SentDate,PaidDate,PaidAmount,PDF,ClockifyReport,Notes
+FR-2026-001,"Dustin Budd dba. Lumen & Legacy Financial, LLC",2026-01-31,2026-01-17,2026-01-28,1575.00,10.5,Sent,,,,FR-2026-001_Dustin_Budd_Lumen_Legacy.pdf,Clockify_Time_Report_Detailed_01_01_2026-31_12_2026.csv,"PDF from generate_invoice.py on processed CSV with --month 2026-01. Add Income row when paid."

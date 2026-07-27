@@ -1,12 +1,13 @@
 /**
  * Agreement submission storage.
- * Uses Upstash Redis in production (Vercel) when env vars are set,
+ * Uses private Vercel Blob when BLOB_READ_WRITE_TOKEN is set,
  * falls back to file storage for local development.
  */
 
 import { readFile, writeFile, mkdir } from 'fs/promises'
 import path from 'path'
 import type { AgreementSubmission } from '@/app/api/agreement-submit/route'
+import { getJson, hasBlobEnv, putJson } from '@/lib/blob-store'
 
 export type StoredSubmission = AgreementSubmission & {
   token: string
@@ -18,43 +19,23 @@ export type StoredSubmission = AgreementSubmission & {
   consultant_date?: string
 }
 
-const REDIS_KEY_PREFIX = 'agreement:submission:'
+function blobPath(token: string): string {
+  return `contracts/agreements/${token}.json`
+}
 
 function getSubmissionsPath(): string {
   const dir = path.join(process.cwd(), 'data')
   return path.join(dir, 'agreement-submissions.json')
 }
 
-function hasRedisEnv(): boolean {
-  return Boolean(
-    (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) ||
-      (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
-  )
-}
-
-function getRedisUrl(): string {
-  return process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || ''
-}
-
-function getRedisToken(): string {
-  return process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || ''
-}
-
 export async function getSubmissionByToken(
   token: string
 ): Promise<StoredSubmission | null> {
-  if (hasRedisEnv()) {
+  if (hasBlobEnv()) {
     try {
-      const { Redis } = await import('@upstash/redis')
-      const redis = new Redis({
-        url: getRedisUrl(),
-        token: getRedisToken(),
-      })
-      const raw = await redis.get<string>(`${REDIS_KEY_PREFIX}${token}`)
-      if (!raw) return null
-      return typeof raw === 'string' ? (JSON.parse(raw) as StoredSubmission) : (raw as StoredSubmission)
+      return await getJson<StoredSubmission>(blobPath(token))
     } catch (err) {
-      console.error('Redis get error:', err)
+      console.error('Blob get error:', err)
       throw err
     }
   }
@@ -76,22 +57,13 @@ export async function getSubmissionByToken(
 export async function saveSubmission(
   submission: StoredSubmission
 ): Promise<void> {
-  if (hasRedisEnv()) {
+  if (hasBlobEnv()) {
     try {
-      const { Redis } = await import('@upstash/redis')
-      const redis = new Redis({
-        url: getRedisUrl(),
-        token: getRedisToken(),
-      })
-      await redis.set(
-        `${REDIS_KEY_PREFIX}${submission.token}`,
-        JSON.stringify(submission)
-      )
+      await putJson(blobPath(submission.token), submission)
       return
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
-      const code = err instanceof Error && 'code' in err ? String((err as { code?: string }).code) : ''
-      console.error('Redis set error:', msg, code ? `[${code}]` : '')
+      console.error('Blob set error:', msg)
       throw err
     }
   }
@@ -119,20 +91,12 @@ export async function updateSubmission(
 
   const updated = { ...current, ...updates }
 
-  if (hasRedisEnv()) {
+  if (hasBlobEnv()) {
     try {
-      const { Redis } = await import('@upstash/redis')
-      const redis = new Redis({
-        url: getRedisUrl(),
-        token: getRedisToken(),
-      })
-      await redis.set(
-        `${REDIS_KEY_PREFIX}${token}`,
-        JSON.stringify(updated)
-      )
+      await putJson(blobPath(token), updated)
       return updated
     } catch (err) {
-      console.error('Redis update error:', err)
+      console.error('Blob update error:', err)
       throw err
     }
   }

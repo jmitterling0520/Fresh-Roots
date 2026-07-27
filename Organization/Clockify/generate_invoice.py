@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate invoice PDFs from a Clockify CSV report."""
 
+import argparse
 import csv
 import re
 import sys
@@ -12,9 +13,12 @@ try:
 except ImportError:
     print("Installing fpdf2...")
     import subprocess
+
     subprocess.check_call([sys.executable, "-m", "pip", "install", "fpdf2", "-q"])
     from fpdf import FPDF
     from fpdf.fonts import FontFace
+
+DEFAULT_CSV_NAME = "Clockify_Time_Report_Detailed_01_01_2026-31_12_2026.csv"
 
 
 def sanitize_filename(name: str) -> str:
@@ -32,17 +36,63 @@ def parse_dd_mm_yyyy(s: str) -> tuple[int, int, int]:
     return 0, 0, 0
 
 
-def main():
+def parse_month_arg(s: str) -> tuple[int, int]:
+    """Parse YYYY-MM to (year, month)."""
+    m = re.match(r"^(\d{4})-(\d{2})$", s.strip())
+    if not m:
+        print("Error: --month must be YYYY-MM (e.g. 2026-01)", file=sys.stderr)
+        sys.exit(1)
+    y, mo = int(m.group(1)), int(m.group(2))
+    if mo < 1 or mo > 12:
+        print("Error: invalid month in --month", file=sys.stderr)
+        sys.exit(1)
+    return y, mo
+
+
+def row_in_calendar_month(start_date: str, year: int, month: int) -> bool:
+    _, m, y = parse_dd_mm_yyyy(start_date)
+    return y == year and m == month
+
+
+def main() -> None:
     script_dir = Path(__file__).resolve().parent
     project_root = script_dir.parent.parent
     logo_path = (project_root / "Website" / "public" / "Fresh-roots-Logo-transparent.png").resolve()
-    csv_path = script_dir / "Clockify_Time_Report_Detailed_01_01_2026-31_12_2026.csv"
+
+    parser = argparse.ArgumentParser(
+        description="Generate one invoice PDF per client from a Clockify detailed export."
+    )
+    parser.add_argument(
+        "csv_file",
+        nargs="?",
+        default=None,
+        help=f"Path to Clockify CSV (default: {DEFAULT_CSV_NAME} in this folder). "
+        "Relative paths are resolved from the Clockify folder.",
+    )
+    parser.add_argument(
+        "--month",
+        metavar="YYYY-MM",
+        help="Only include rows whose Start Date falls in this calendar month. "
+        "Recommended when the CSV spans multiple billing periods.",
+    )
+    args = parser.parse_args()
+
+    if args.csv_file:
+        csv_path = Path(args.csv_file)
+        if not csv_path.is_absolute():
+            csv_path = (script_dir / csv_path).resolve()
+    else:
+        csv_path = script_dir / DEFAULT_CSV_NAME
 
     if not csv_path.exists():
-        print(f"Error: {csv_path} not found")
+        print(f"Error: {csv_path} not found", file=sys.stderr)
         sys.exit(1)
 
-    # Parse CSV and group by client
+    filter_ym: tuple[int, int] | None = None
+    if args.month:
+        filter_ym = parse_month_arg(args.month)
+
+    # Parse CSV and group by client (optionally filter by month)
     clients: dict[str, list[dict]] = {}
     with open(csv_path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -50,22 +100,36 @@ def main():
             client = (row.get("Client") or "").strip()
             if not client:
                 continue
+            if filter_ym:
+                fy, fm = filter_ym
+                if not row_in_calendar_month(row.get("Start Date", ""), fy, fm):
+                    continue
             if client not in clients:
                 clients[client] = []
             clients[client].append(row)
 
     if not clients:
-        print("No client data found in CSV")
+        if filter_ym:
+            print(
+                f"No billable rows found for {args.month} in {csv_path}. "
+                "Check --month or CSV contents.",
+                file=sys.stderr,
+            )
+        else:
+            print("No client data found in CSV", file=sys.stderr)
         sys.exit(1)
 
-    # Determine year/month from data (latest Start Date)
-    year, month = 2026, 1
-    for rows in clients.values():
-        for r in rows:
-            d, m, y = parse_dd_mm_yyyy(r.get("Start Date", ""))
-            if y and m:
-                if y > year or (y == year and m > month):
-                    year, month = y, m
+    # Output folder: explicit month filter wins; else latest Start Date in data
+    if filter_ym:
+        year, month = filter_ym
+    else:
+        year, month = 2026, 1
+        for rows in clients.values():
+            for r in rows:
+                d, m, y = parse_dd_mm_yyyy(r.get("Start Date", ""))
+                if y and m:
+                    if y > year or (y == year and m > month):
+                        year, month = y, m
 
     out_dir = script_dir / str(year) / f"{month:02d}"
     out_dir.mkdir(parents=True, exist_ok=True)

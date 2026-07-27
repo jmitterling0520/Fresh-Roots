@@ -125,8 +125,8 @@ export async function POST(request: Request) {
     const msg = err instanceof Error ? err.message : String(err)
     const code = err instanceof Error && 'code' in err ? String((err as { code?: string }).code) : ''
     console.error('Agreement submit error:', msg, code ? `[${code}]` : '')
-    if (process.env.VERCEL === '1' && !(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)) {
-      console.error('Hint: Set KV_REST_API_URL and KV_REST_API_TOKEN in Vercel → Settings → Environment Variables, then redeploy.')
+    if (process.env.VERCEL === '1' && !process.env.BLOB_READ_WRITE_TOKEN) {
+      console.error('Hint: Set BLOB_READ_WRITE_TOKEN in Vercel → Settings → Environment Variables, then redeploy.')
     }
     return NextResponse.json(
       { error: 'Failed to save submission' },

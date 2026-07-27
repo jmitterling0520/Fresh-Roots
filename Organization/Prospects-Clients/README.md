@@ -1,16 +1,19 @@
 # Prospects & Clients
 
-Simple pipeline for tracking potential prospects and converted clients for Fresh Roots Consulting, LLC.
+CRM for Fresh Roots Consulting, LLC: prospects in the funnel and active clients in a separate client database.
 
 ## Contents
 
 | Item | Purpose |
 |------|---------|
-| **pipeline.csv** | Single list of everyone in your funnel: prospects (potential) and clients (converted). Use **Status** to filter. |
-| **PROMPT-add-prospect.md** | Prompt to add a new prospect: provide details in chat, AI proposes a row and (with your OK) appends to the pipeline. |
+| **pipeline.csv** | Prospect funnel and conversion history. Status: `Prospect` or `Converted`. |
+| **clients.csv** | Client database for signed or active engagements. Status: `Active`, `Inactive`, or `Paused`. |
+| **PROMPT-add-prospect.md** | Legacy prompt to add a prospect (superseded by the setup-client skill for agent use). |
 | **README.md** | This file — how to use the system |
 
-## Pipeline fields
+**Preferred AI workflow:** `.cursor/skills/setup-client/` — handles website inquiries, manual clients, prospect conversion, and signed agreements.
+
+## pipeline.csv fields
 
 | Column | Use |
 |--------|-----|
@@ -20,27 +23,51 @@ Simple pipeline for tracking potential prospects and converted clients for Fresh
 | **Email** | Primary email |
 | **Phone** | Phone (optional) |
 | **Source** | How you found them (e.g. Referral, Website, LinkedIn, Cold outreach) |
-| **Status** | `Prospect` or `Client` |
-| **Date Converted** | When they became a client (YYYY-MM-DD). Leave blank for prospects. |
+| **Status** | `Prospect` (in funnel) or `Converted` (became a client; see clients.csv) |
+| **Date Converted** | When they became a client (YYYY-MM-DD). Leave blank for active prospects. |
 | **Notes** | Free-form notes, next steps, project focus, etc. |
+
+## clients.csv fields
+
+| Column | Use |
+|--------|-----|
+| **Date Added** | When the client row was created (YYYY-MM-DD) |
+| **Name** | Primary contact |
+| **Company** | Business name |
+| **Email** | Primary email |
+| **Phone** | Phone (optional) |
+| **Source** | How you found them |
+| **Status** | `Active`, `Inactive`, or `Paused` |
+| **Client Since** | Engagement or signature start date (YYYY-MM-DD) |
+| **Company Website** | From contact form when available |
+| **Agreement Date** | From `/agreement` flow when applicable (YYYY-MM-DD) |
+| **Notes** | Project focus, caps, invoice refs, etc. |
 
 ## How to use
 
-### Adding a prospect
-- **Option A:** Add a new row in **pipeline.csv** by hand. Set **Status** to `Prospect`, leave **Date Converted** blank, and fill **Source** and **Notes**.
-- **Option B:** Use **PROMPT-add-prospect.md**: paste the prompt into your AI chat, give the prospect’s name and any details; the AI will propose a row and, after you say yes, append it to the pipeline.
+### Adding a prospect (website inquiry or outreach)
 
-### Converting a prospect to a client
-- Find the row in **pipeline.csv**
-- Change **Status** from `Prospect` to `Client`
-- Set **Date Converted** to the date they became a client (YYYY-MM-DD)
-- Optionally add a note in **Notes** (e.g. project name, engagement type)
+- **Option A:** Add a row to **pipeline.csv**. Set **Status** to `Prospect`, leave **Date Converted** blank.
+- **Option B:** Ask the agent to use the **setup-client** skill with the inquiry details.
+- **Option C:** Use **PROMPT-add-prospect.md** (legacy; same outcome as Option B).
 
-### Viewing only prospects or only clients
-- In a spreadsheet: filter **Status** by `Prospect` or `Client`
-- Sort by **Date Added** or **Date Converted** as needed
+Website contact form leads should start as **Prospect** with **Source** = `Website`.
+
+### Adding a client (manual or signed agreement)
+
+- Add a row to **clients.csv** with **Status** = `Active` and **Client Since** set.
+- If they were a prospect, also update their **pipeline.csv** row: **Status** → `Converted`, **Date Converted** → client-since date.
+- Use the **setup-client** skill to propose and confirm changes.
+
+### Viewing prospects vs clients
+
+- **Active prospects:** filter **pipeline.csv** by `Status` = `Prospect`
+- **Conversion history:** filter **pipeline.csv** by `Status` = `Converted`
+- **Active clients:** filter **clients.csv** by `Status` = `Active`
 
 ## Tips
-- Keep **Date Added** and **Date Converted** as YYYY-MM-DD for consistent sorting.
-- Use **Source** consistently (e.g. always "Website" not "web" / "site") so you can see where clients come from.
-- You can link client revenue to **transactions.csv** by using the same name/company in the income Description field.
+
+- Keep dates as YYYY-MM-DD for consistent sorting.
+- Use **Source** consistently (e.g. always `Website`, not `web` / `site`).
+- Link client revenue to **transactions.csv** by using the same name/company in the income Description field.
+- Invoicing register: **Organization/Invoicing/invoices.csv**

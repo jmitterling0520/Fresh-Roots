@@ -1,26 +1,20 @@
 /**
  * Magic link tokens for viewing approved agreements.
- * Requires Redis; no file-storage fallback.
+ * Stored as private Vercel Blob JSON with a 24-hour expiresAt.
  */
 
 import { randomBytes } from 'crypto'
+import { deleteBlob, getJson, hasBlobEnv, putJson } from '@/lib/blob-store'
 
-const MAGIC_PREFIX = 'agreement:magic:'
-const MAGIC_TTL_SECONDS = 24 * 60 * 60 // 24 hours
+const MAGIC_TTL_MS = 24 * 60 * 60 * 1000
 
-function hasRedisEnv(): boolean {
-  return Boolean(
-    (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) ||
-      (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
-  )
+type MagicPayload = {
+  submissionToken: string
+  expiresAt: string
 }
 
-function getRedisUrl(): string {
-  return process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || ''
-}
-
-function getRedisToken(): string {
-  return process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || ''
+function magicPath(magicToken: string): string {
+  return `contracts/magic/agreements/${magicToken}.json`
 }
 
 export function generateMagicToken(): string {
@@ -31,35 +25,36 @@ export async function createMagicToken(
   agreementToken: string,
   _email: string
 ): Promise<string> {
-  if (!hasRedisEnv()) {
-    throw new Error('Magic links require Redis (KV_REST_API_URL and KV_REST_API_TOKEN)')
+  if (!hasBlobEnv()) {
+    throw new Error(
+      'Magic links require BLOB_READ_WRITE_TOKEN (Vercel Blob)'
+    )
   }
   const magicToken = generateMagicToken()
-  const { Redis } = await import('@upstash/redis')
-  const redis = new Redis({
-    url: getRedisUrl(),
-    token: getRedisToken(),
-  })
-  await redis.set(
-    `${MAGIC_PREFIX}${magicToken}`,
-    agreementToken,
-    { ex: MAGIC_TTL_SECONDS }
-  )
+  const expiresAt = new Date(Date.now() + MAGIC_TTL_MS).toISOString()
+  await putJson(magicPath(magicToken), {
+    submissionToken: agreementToken,
+    expiresAt,
+  } satisfies MagicPayload)
   return magicToken
 }
 
 export async function verifyMagicToken(
   magicToken: string
 ): Promise<string | null> {
-  if (!hasRedisEnv()) return null
+  if (!hasBlobEnv()) return null
   try {
-    const { Redis } = await import('@upstash/redis')
-    const redis = new Redis({
-      url: getRedisUrl(),
-      token: getRedisToken(),
-    })
-    const agreementToken = await redis.get<string>(`${MAGIC_PREFIX}${magicToken}`)
-    return agreementToken as string | null
+    const payload = await getJson<MagicPayload>(magicPath(magicToken))
+    if (!payload?.submissionToken || !payload.expiresAt) return null
+    if (Date.now() > new Date(payload.expiresAt).getTime()) {
+      try {
+        await deleteBlob(magicPath(magicToken))
+      } catch {
+        /* ignore cleanup errors */
+      }
+      return null
+    }
+    return payload.submissionToken
   } catch {
     return null
   }

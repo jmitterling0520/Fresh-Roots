@@ -153,23 +153,22 @@ The contact form currently saves to a **file** (`data/submissions.json`). On Ver
 
 ## Agreement Form on Vercel (Submit for Review)
 
-The agreement form at `/agreement` saves submissions and sends an approval link by email. On Vercel the filesystem is read-only, so the app uses **Upstash Redis** for storage when the env vars are set.
+The agreement form at `/agreement` (and SOWs under `/sow/[slug]`) saves submissions and sends an approval link by email. On Vercel the filesystem is read-only, so the app uses **Vercel Blob** (private JSON objects) when `BLOB_READ_WRITE_TOKEN` is set.
 
-**To enable agreement submissions in production:**
+**To enable agreement/SOW submissions in production:**
 
-1. Go to [Vercel Marketplace](https://vercel.com/marketplace) and search for **Upstash Redis** (or [Upstash Redis integration](https://vercel.com/integrations/upstash)).
-2. Add the integration to your project and follow the setup (create a Redis database if needed).
-3. Vercel will inject `KV_REST_API_URL` and `KV_REST_API_TOKEN` (and related vars) into your project.
-4. Redeploy the site.
+1. Create a Blob store in the Vercel project (Storage → Blob) if you do not already have one.
+2. Set **`BLOB_READ_WRITE_TOKEN`** in Production (and Preview if needed). See `Website/VERCEL-BLOB-SETUP.md`.
+3. Redeploy the site.
 
-If Redis env vars (`KV_REST_API_URL` + `KV_REST_API_TOKEN`, or `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`) are not set (e.g. local dev), the app falls back to file storage (`data/agreement-submissions.json`).
+If `BLOB_READ_WRITE_TOKEN` is not set (e.g. local dev without Blob), the app falls back to file storage (`data/agreement-submissions.json` / `data/sow-submissions.json`). Magic links require Blob.
 
 ### Agreement view (magic link)
 
 After approval, the agreement is viewable at `/agreement/view/[token]` only via a **magic link**. When someone visits without a valid link, they see an email form; after entering an authorized email, a time-limited link is emailed to them (valid 24 hours).
 
 **Requirements:**
-- **Redis** (same as above) — magic tokens are stored in Redis.
+- **Vercel Blob** (same as above) — submissions and magic tokens are stored as private Blob objects.
 - **Resend** — `RESEND_API_KEY` and `CONTACT_FORM_FROM_EMAIL` (see [Contact Form - Resend Setup](Contact%20Form%20-%20Resend%20Setup.md)).
 - **Consultant access** — `CONTACT_FORM_TO_EMAIL` or `CONSULTANT_EMAIL` so you (the consultant) can request a magic link with your own email.
 
