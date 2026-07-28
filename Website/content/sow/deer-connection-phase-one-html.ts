@@ -72,6 +72,7 @@ h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
 <tr><td>Support</td><td>Excluded — separate Time &amp; Materials (T&amp;M) contract</td></tr>
 </table>
 
+<div class="page-break page-2">
 <h2>1. Parties</h2>
 <p>This Statement of Work ("SOW") is entered into as of the Effective Date by and between:</p>
 <ul>
@@ -80,7 +81,6 @@ h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
 </ul>
 <p>Provider and Customer may each be referred to as a "Party" and together as the "Parties."</p>
 
-<div class="page-break page-2">
 <h2>2. Purpose</h2>
 <p>Provider will deliver <strong>Phase One POV application development</strong> for the <strong>Deer Connection</strong> hosted website application (also referred to as Deer Connect): configuration, completion, and <strong>Production Deployment</strong> of the as-built Phase One application so Customer can operate and evaluate the platform in a production environment.</p>
 <p>This SOW is a <strong>fixed-fee development engagement</strong>. It is <strong>not</strong> a recurring SaaS subscription Order Form and does <strong>not</strong> include ongoing support, maintenance, or service-level commitments. Support will be addressed under a <strong>separate Time &amp; Materials contract</strong>.</p>
