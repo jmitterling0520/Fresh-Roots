@@ -1,7 +1,7 @@
 /**
  * Client-side HTML → PDF.
- * Renders each `.page-break` section via html2canvas and forces a new PDF page
- * between sections so content is never sliced mid-paragraph across boundaries.
+ * Splits the document at `.page-break` markers, renders each section with
+ * html2canvas, and starts every section on a new PDF page.
  */
 
 import html2canvas from 'html2canvas'
@@ -13,6 +13,7 @@ const MARGIN_MM = 10
 const CONTENT_WIDTH_MM = PAGE_WIDTH_MM - MARGIN_MM * 2
 const CONTENT_HEIGHT_MM = PAGE_HEIGHT_MM - MARGIN_MM * 2
 const RENDER_WIDTH_PX = 794
+const PAGE_BREAK_RE = /<div class="page-break[^"]*">/gi
 
 const PDF_EXPORT_CSS = `
 .pdf-export-root, .pdf-chunk {
@@ -78,69 +79,114 @@ const PDF_EXPORT_CSS = `
 }
 `
 
-function parseHtml(html: string): Document {
-  const parser = new DOMParser()
-  return parser.parseFromString(html, 'text/html')
+function extractBodyHtml(html: string): string {
+  const match = html.match(/<body[^>]*>([\s\S]*)<\/body>/i)
+  return match?.[1] ?? html
 }
 
-function isPageBreak(el: Element): boolean {
-  return (
-    el.classList.contains('page-break') ||
-    el.getAttribute('class')?.split(/\s+/).includes('page-break') === true
-  )
+function stripClosingWrapperDiv(sectionHtml: string): string {
+  const trimmed = sectionHtml.trim()
+  if (trimmed.endsWith('</div>')) {
+    return trimmed.slice(0, trimmed.lastIndexOf('</div>')).trim()
+  }
+  return trimmed
 }
 
-function buildChunks(body: HTMLElement): HTMLElement[] {
-  const chunks: HTMLElement[] = []
-  let preamble = document.createElement('div')
-  preamble.className = 'pdf-chunk'
+/** Split on explicit page-break markers in the HTML we generate. */
+function splitHtmlIntoSections(html: string): string[] {
+  const bodyHtml = extractBodyHtml(html)
+  const breaks: Array<{ start: number; contentStart: number }> = []
 
-  for (const child of Array.from(body.children)) {
-    if (isPageBreak(child)) {
-      if (preamble.childNodes.length > 0) {
-        chunks.push(preamble)
-        preamble = document.createElement('div')
-        preamble.className = 'pdf-chunk'
-      }
-      const section = document.createElement('div')
-      section.className = 'pdf-chunk'
-      for (const node of Array.from(child.childNodes)) {
-        section.appendChild(node.cloneNode(true))
-      }
-      chunks.push(section)
-    } else {
-      preamble.appendChild(child.cloneNode(true))
+  for (const match of bodyHtml.matchAll(PAGE_BREAK_RE)) {
+    if (match.index == null) continue
+    breaks.push({
+      start: match.index,
+      contentStart: match.index + match[0].length,
+    })
+  }
+
+  if (breaks.length === 0) {
+    return [`<div class="pdf-chunk">${bodyHtml}</div>`]
+  }
+
+  const sections: string[] = []
+  const preamble = bodyHtml.slice(0, breaks[0].start).trim()
+  if (preamble) {
+    sections.push(`<div class="pdf-chunk">${preamble}</div>`)
+  }
+
+  for (let i = 0; i < breaks.length; i++) {
+    const contentStart = breaks[i].contentStart
+    const contentEnd =
+      i + 1 < breaks.length ? breaks[i + 1].start : bodyHtml.length
+    const sectionHtml = stripClosingWrapperDiv(
+      bodyHtml.slice(contentStart, contentEnd)
+    )
+    if (sectionHtml) {
+      sections.push(`<div class="pdf-chunk">${sectionHtml}</div>`)
     }
   }
 
-  if (preamble.childNodes.length > 0) {
-    chunks.push(preamble)
+  return sections
+}
+
+async function loadHtmlInIframe(html: string): Promise<{
+  iframe: HTMLIFrameElement
+  doc: Document
+}> {
+  const iframe = document.createElement('iframe')
+  iframe.setAttribute('sandbox', 'allow-same-origin')
+  iframe.style.cssText =
+    'position:fixed;left:-10000px;top:0;width:794px;height:10px;border:0;visibility:hidden'
+  document.body.appendChild(iframe)
+
+  await new Promise<void>((resolve, reject) => {
+    iframe.onload = () => resolve()
+    iframe.onerror = () => reject(new Error('Failed to load SOW HTML'))
+    iframe.srcdoc = html
+  })
+
+  const doc = iframe.contentDocument
+  if (!doc?.body) {
+    iframe.remove()
+    throw new Error('Failed to parse SOW HTML')
   }
 
-  return chunks
+  await Promise.all(
+    Array.from(doc.images).map(
+      (img) =>
+        new Promise<void>((resolve) => {
+          if (img.complete) {
+            resolve()
+            return
+          }
+          img.onload = () => resolve()
+          img.onerror = () => resolve()
+        })
+    )
+  )
+
+  return { iframe, doc }
 }
 
-function createStyledMount(chunk: HTMLElement, css: string): HTMLDivElement {
-  const mount = document.createElement('div')
-  mount.className = 'pdf-export-root'
-  mount.style.cssText =
-    'position:fixed;left:-10000px;top:0;width:794px;background:#fff;'
-  const styleEl = document.createElement('style')
-  styleEl.textContent = css
-  mount.appendChild(styleEl)
-  mount.appendChild(chunk)
-  return mount
-}
-
-async function renderChunkImages(
-  chunk: HTMLElement,
-  css: string
+async function renderSectionToCanvas(
+  sectionHtml: string,
+  css: string,
+  doc: Document
 ): Promise<HTMLCanvasElement> {
-  const mount = createStyledMount(chunk, css)
-  document.body.appendChild(mount)
+  const exportStyle = doc.createElement('style')
+  exportStyle.textContent = css
+  doc.head.appendChild(exportStyle)
+
+  const wrapper = doc.createElement('div')
+  wrapper.className = 'pdf-export-root'
+  wrapper.style.width = `${RENDER_WIDTH_PX}px`
+  wrapper.style.background = '#fff'
+  wrapper.innerHTML = sectionHtml
+  doc.body.appendChild(wrapper)
 
   try {
-    return await html2canvas(mount, {
+    return await html2canvas(wrapper, {
       scale: 2,
       useCORS: true,
       logging: false,
@@ -149,7 +195,8 @@ async function renderChunkImages(
       windowWidth: RENDER_WIDTH_PX,
     })
   } finally {
-    mount.remove()
+    wrapper.remove()
+    exportStyle.remove()
   }
 }
 
@@ -209,22 +256,26 @@ export async function downloadHtmlAsPdf(
   html: string,
   filename: string
 ): Promise<void> {
-  const doc = parseHtml(html)
-  const baseCss = doc.querySelector('style')?.textContent ?? ''
-  const css = `${baseCss}\n${PDF_EXPORT_CSS}`
-
-  const chunks = buildChunks(doc.body)
-  if (chunks.length === 0) {
+  const sections = splitHtmlIntoSections(html)
+  if (sections.length === 0) {
     throw new Error('No PDF content found')
   }
 
-  const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })
-  const isFirstPdfPage = { value: true }
+  const { iframe, doc } = await loadHtmlInIframe(html)
+  const baseCss = doc.querySelector('style')?.textContent ?? ''
+  const css = `${baseCss}\n${PDF_EXPORT_CSS}`
 
-  for (const chunk of chunks) {
-    const canvas = await renderChunkImages(chunk, css)
-    addCanvasSlicesToPdf(pdf, canvas, isFirstPdfPage)
+  try {
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })
+    const isFirstPdfPage = { value: true }
+
+    for (const sectionHtml of sections) {
+      const canvas = await renderSectionToCanvas(sectionHtml, css, doc)
+      addCanvasSlicesToPdf(pdf, canvas, isFirstPdfPage)
+    }
+
+    pdf.save(filename)
+  } finally {
+    iframe.remove()
   }
-
-  pdf.save(filename)
 }
