@@ -286,12 +286,11 @@ h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
 <h2>12. Intellectual property</h2>
 <p>Subject to final legal review and any overriding master agreement between the Parties:</p>
 <ol>
-<li><strong>Provider IP.</strong> Provider retains all rights in its pre-existing materials, methods, tools, frameworks, and intellectual property, and in any Provider-owned components of the Deer Connection application and related work product developed in the course of providing services, except for the license granted below.</li>
-<li><strong>Customer license.</strong> Upon payment of the fixed fee amounts due under this SOW, Customer receives a non-exclusive right to use the delivered Phase One application for Customer's internal business purposes in connection with operating Deer Connection as contemplated by this SOW.</li>
+<li><strong>Provider background IP.</strong> Provider retains all rights in its pre-existing materials, methods, tools, frameworks, and intellectual property (collectively, &ldquo;Provider Background IP&rdquo;). Provider Background IP does not include the Phase One Deer Connection application deliverables assigned under Section 12.2.</li>
+<li><strong>Application ownership.</strong> Upon completion of this SOW—meaning <strong>Production Deployment</strong> and payment of the fixed fee amounts due under Section 10—Provider assigns and transfers to Customer all right, title, and interest in and to the delivered Phase One Deer Connection application (including source code, configuration, and related work product created for Customer under this SOW), free of Provider ownership claims other than Provider Background IP. To the extent Provider Background IP is embodied in the delivered application, Customer receives a perpetual, royalty-free, non-exclusive license to use that Background IP solely as embodied in the delivered application for Customer's operation of Deer Connection.</li>
 <li><strong>Customer materials.</strong> Customer retains rights in Customer-provided branding, content, and data.</li>
-<li><strong>Feedback.</strong> Provider may use general feedback and know-how without restriction, provided Customer Confidential Information is not disclosed.</li>
+<li><strong>Feedback.</strong> Provider may use general feedback and know-how without restriction, provided Customer Confidential Information is not disclosed and Customer's ownership of the assigned application is not impaired.</li>
 </ol>
-<p>Detailed ownership, assignment, or exclusive-license terms (if any) should be confirmed in writing before signing if they differ from the above.</p>
 </div>
 
 <div class="page-break page-7">

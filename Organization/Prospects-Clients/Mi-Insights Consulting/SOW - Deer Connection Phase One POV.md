@@ -247,12 +247,10 @@ Work outside the Phase One scope in Sections 5–6, or changes to assumptions in
 
 Subject to final legal review and any overriding master agreement between the Parties:
 
-1. **Provider IP.** Provider retains all rights in its pre-existing materials, methods, tools, frameworks, and intellectual property, and in any Provider-owned components of the Deer Connection application and related work product developed in the course of providing services, except for the license granted below.
-2. **Customer license.** Upon payment of the fixed fee amounts due under this SOW, Customer receives a non-exclusive right to use the delivered Phase One application for Customer’s internal business purposes in connection with operating Deer Connection as contemplated by this SOW.
+1. **Provider background IP.** Provider retains all rights in its pre-existing materials, methods, tools, frameworks, and intellectual property (collectively, “Provider Background IP”). Provider Background IP does not include the Phase One Deer Connection application deliverables assigned under Section 12.2.
+2. **Application ownership.** Upon completion of this SOW—meaning **Production Deployment** and payment of the fixed fee amounts due under Section 10—Provider assigns and transfers to Customer all right, title, and interest in and to the delivered Phase One Deer Connection application (including source code, configuration, and related work product created for Customer under this SOW), free of Provider ownership claims other than Provider Background IP. To the extent Provider Background IP is embodied in the delivered application, Customer receives a perpetual, royalty-free, non-exclusive license to use that Background IP solely as embodied in the delivered application for Customer’s operation of Deer Connection.
 3. **Customer materials.** Customer retains rights in Customer-provided branding, content, and data.
-4. **Feedback.** Provider may use general feedback and know-how without restriction, provided Customer Confidential Information is not disclosed.
-
-Detailed ownership, assignment, or exclusive-license terms (if any) should be confirmed in writing before signing if they differ from the above.
+4. **Feedback.** Provider may use general feedback and know-how without restriction, provided Customer Confidential Information is not disclosed and Customer’s ownership of the assigned application is not impaired.
 
 ---
 
@@ -303,5 +301,5 @@ Provisions that by their nature should survive (including fees owed, IP, and con
 ## Related follow-ups (not part of this SOW)
 
 - Separate **Time & Materials support contract** (channels, rates, severity/response, included vs excluded work)
-- Any future Order Form / MSA for recurring platform access or MBC billing (if applicable)
+- Any future commercial arrangements Customer may choose (for example additional development, hosting assistance, or optional billing models), without implying Provider retains ownership of Deer Connection after assignment under Section 12
 - Change orders for features beyond Phase One as-built scope
