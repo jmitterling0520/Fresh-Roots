@@ -5,6 +5,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+import { downloadHtmlAsPdf } from '@/lib/download-pdf'
 
 export default function AgreementViewPage() {
   const params = useParams()
@@ -100,25 +101,7 @@ export default function AgreementViewPage() {
       const safeName = (clientName || 'Client').replace(/[<>:"/\\|?*]/g, ' ').trim().replace(/\s+/g, ' ') || 'Client'
       const safeDate = (signatureDate || '').replace(/[<>:"/\\|?*]/g, '-').trim() || 'signed'
       const filename = `Fresh Roots and ${safeName} Agreement - ${safeDate}.pdf`
-      const html2pdf = (await import('html2pdf.js')).default
-      const parser = new DOMParser()
-      const doc = parser.parseFromString(html, 'text/html')
-      const style = doc.querySelector('style')
-      if (style && doc.body) {
-        doc.body.insertBefore(style, doc.body.firstChild)
-      }
-      const element = doc.body
-      await html2pdf()
-        .set({
-          margin: 15,
-          filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { mode: ['css', 'legacy'], before: ['.page-2', '.page-3', '.page-4', '.page-5'], avoid: ['.sig-table', 'h1', 'h2'] },
-        } as any)
-        .from(element)
-        .save()
+      await downloadHtmlAsPdf(html, filename)
     } catch (err) {
       console.error('PDF generation failed:', err)
     } finally {

@@ -80,11 +80,13 @@ h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
 </ul>
 <p>Provider and Customer may each be referred to as a "Party" and together as the "Parties."</p>
 
+<div class="page-break page-2">
 <h2>2. Purpose</h2>
 <p>Provider will deliver <strong>Phase One POV application development</strong> for the <strong>Deer Connection</strong> hosted website application (also referred to as Deer Connect): configuration, completion, and <strong>Production Deployment</strong> of the as-built Phase One application so Customer can operate and evaluate the platform in a production environment.</p>
 <p>This SOW is a <strong>fixed-fee development engagement</strong>. It is <strong>not</strong> a recurring SaaS subscription Order Form and does <strong>not</strong> include ongoing support, maintenance, or service-level commitments. Support will be addressed under a <strong>separate Time &amp; Materials contract</strong>.</p>
+</div>
 
-<div class="page-break page-2">
+<div class="page-break page-3">
 <h2>3. Definitions</h2>
 <table>
 <tr><th>Term</th><th>Meaning</th></tr>
@@ -112,7 +114,7 @@ h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
 <p><strong>Access language:</strong> web application, hosted site, browser access. Phase One scope does <strong>not</strong> include app-store distribution or native mobile app listings.</p>
 </div>
 
-<div class="page-break page-3">
+<div class="page-break page-4">
 <h2>5. Scope of work (in scope)</h2>
 <p>Provider will deliver and deploy the as-built Phase One Deer Connection website application with the capabilities below (unless noted otherwise).</p>
 
@@ -172,7 +174,7 @@ h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
 </ul>
 </div>
 
-<div class="page-break page-4">
+<div class="page-break page-5">
 <h3>5.7 Events (scout / hunt / pickup)</h3>
 <ul>
 <li>Create, edit, cancel, and filter events</li>
@@ -224,7 +226,7 @@ h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
 </ol>
 </div>
 
-<div class="page-break page-5">
+<div class="page-break page-6">
 <h2>7. Assumptions</h2>
 <ol>
 <li><strong>Customer role.</strong> Customer is the sponsoring / operating organization for Phase One. End users access the website application at no charge; there is no consumer checkout in the application.</li>
@@ -256,7 +258,7 @@ h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
 </ul>
 </div>
 
-<div class="page-break page-6">
+<div class="page-break page-7">
 <h2>9. Support (separate contract)</h2>
 <p><strong>Support is not included under this SOW.</strong></p>
 <p>The Parties intend to address post-deployment support, defect triage, and related operational assistance under a <strong>separate Time &amp; Materials (T&amp;M) contract</strong>. Until that agreement is executed, Provider has no obligation under this SOW to provide ongoing support, maintenance, or SLA-backed response times.</p>
@@ -293,7 +295,7 @@ h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
 </ol>
 </div>
 
-<div class="page-break page-7">
+<div class="page-break page-8">
 <h2>13. Term</h2>
 <p>This SOW is effective on the Effective Date and continues through <strong>Production Deployment</strong> and payment of the fixed fee amounts due under Section 10, unless earlier terminated by mutual written agreement or for material breach uncured within a reasonable period after written notice.</p>
 <p>Provisions that by their nature should survive (including fees owed, IP, and confidentiality if separately agreed) survive termination or completion.</p>
